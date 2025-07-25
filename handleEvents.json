@@ -1,0 +1,54 @@
+{
+    "sections": [
+        {
+            "title": "Тема",
+            "items": [
+                {
+                    "id": "useCustomColor",
+                    "name": "Использовать собственный цвет темы",
+                    "description": "Включает или отключает использование собственного HEX-цвета для темы.",
+                    "type": "button",
+                    "bool": false,
+                    "defaultParameter": false
+                },
+                {
+                    "id": "baseColor",
+                    "name": "Базовый цвет темы",
+                    "description": "Выберите базовый цвет для генерации CSS-переменных темы.",
+                    "type": "color",
+                    "input": "#d56767",
+                    "defaultParameter": "#d56767"
+                }
+            ]
+        },
+        {
+            "title": "Эффекты",
+            "items": [
+                {
+                    "id": "enableBackgroundImage",
+                    "name": "Включить обновление фонового изображения",
+                    "description": "Включает или отключает автоматическое обновление фонового изображения.",
+                    "type": "button",
+                    "bool": true,
+                    "defaultParameter": true
+                },
+                {
+                    "id": "FullVibe",
+                    "name": "Измените размера Vibe",
+                    "description": "Изменяет размер Vibe на 88vh, что делает вашу волну/vibe полноразмерным.",
+                    "type": "button",
+                    "bool": true,
+                    "defaultParameter": false
+                },
+                {
+                    "id": "enableAvatarZoom",
+                    "name": "Включить эффект зума аватара",
+                    "description": "Включает или отключает эффект зума при наведении на аватар.",
+                    "type": "button",
+                    "bool": true,
+                    "defaultParameter": true
+                }
+            ]
+        }
+    ]
+}

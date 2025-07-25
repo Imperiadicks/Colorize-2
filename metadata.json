@@ -1,0 +1,16 @@
+{
+    "name": "Colorize 2",
+    "image": "image.png",
+    "banner": "banner.png",
+    "author": ["maks1mio", "imperiadicks"],
+    "version": "1.1.3",
+    "description": "Улучшенный скрипт Colorize",
+    "css": "style.css",
+    "script": "script.js",
+    "type": "script",
+    "tags": [
+        "PulseSync"
+    ],
+    "dependencies": [],
+    "allowedURLs":
+}
