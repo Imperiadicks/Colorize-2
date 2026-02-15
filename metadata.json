@@ -7,10 +7,9 @@
     "description": "Улучшенный скрипт Colorize",
     "css": "style.css",
     "script": "script.js",
-    "type": "script",
+    "type": "theme",
     "tags": [
         "PulseSync"
     ],
-    "dependencies": [],
-    "allowedURLs":
+    "dependencies": []
 }
