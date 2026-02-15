@@ -207,81 +207,137 @@
     --ym-controls-color-secondary-on_default-enabled:     var(--color-light-10-10);
     --id-default-color-dark-surface-elevated-0:           var(--color-dark-6);
 
-
     /* отключаем фоновую краску контейнеров, чтобы был виден градиент */
     .DefaultLayout_root__*, .CommonLayout_root__*{
       background:transparent !important;
     }
 
     /* ваши предыдущие переопределения ↓ */
-    .ChangeVolume_root__HDxtA{ max-width:160px; }
-    .DefaultLayout_content__md70Z .MainPage_root__STXqc::-webkit-scrollbar{ width:0; }
-    .MainPage_landing___FGNm{ padding-right:24px; }
-    .SyncLyrics_content__lbkWP:after, .SyncLyrics_content__lbkWP:before{ display:none; }
-    .FullscreenPlayerDesktopContent_syncLyrics__6dTfH{
-      margin-block-end:0; height:calc(100vh);
+    .ChangeVolume_root__HDxtA
+    {
+    max-width:160px;
     }
-    .NavbarDesktop_logoLink__KR0Dk{ margin-top:15px; }
-    canvas{ opacity:.2 !important; filter:blur(360px) !important; }
-    .VibeBlock_vibeAnimation__XVEE6:after{ background:transparent !important; }
+    
+    .DefaultLayout_content__md70Z .MainPage_root__STXqc::-webkit-scrollbar
+    {
+    width:0;
+    }
+    
+    .MainPage_landing___FGNm
+    {
+    padding-right:24px;
+    }
+    
+    .SyncLyrics_content__lbkWP:after, .SyncLyrics_content__lbkWP:before
+    {
+    display:none;
+    }
+    
+    .NavbarDesktop_logoLink__KR0Dk
+    {
+    margin-top:15px;
+    }
+    
+    canvas
+    {
+    opacity:.2 !important;
+    filter:blur(360px) !important;
+    }
+    
+    .VibeBlock_vibeAnimation__XVEE6:after
+    {
+    background:transparent !important;
+    }
+    
     .CollectionPage_collectionColor__M5l1f,
     .ygfy3HHHNs5lMz5mm4ON,
-    .yvGpKZBZLwidMfMcVMR3{ color:var(--ym-logo-color-primary-variant); }
-    .kc5CjvU5hT9KEj0iTt3C{ backdrop-filter:none; }
+    .yvGpKZBZLwidMfMcVMR3
+    {
+    color:var(--ym-logo-color-primary-variant);
+    }
+    
+    .kc5CjvU5hT9KEj0iTt3C
+    {backdrop-filter:none;
+    }
+    
     .kc5CjvU5hT9KEj0iTt3C:hover,
-    .kc5CjvU5hT9KEj0iTt3C:focus{ backdrop-filter:saturate(180%) blur(15px); }
-    ::placeholder{ color:var(--color-light-4-10) !important; }
-    .PSBpanel{
+    .kc5CjvU5hT9KEj0iTt3C:focus
+    {
+    backdrop-filter:saturate(180%) blur(15px);
+    }
+    
+    ::placeholder
+    {
+    color:var(--color-light-4-10) !important;
+    }
+    
+    .PSBpanel
+    {
       color:var(--ym-logo-color-primary-variant) !important;
       font-weight:500 !important;
       left:0; right:0 !important;
       display:flex; justify-content:center;
     }
-    .mdbxU6IWInQTsVjwnapn{ background:var(--color-light-5) !important; }
-    .xZzTMqgg0qtV5vqUIrkK{ background-color:var(--color-dark-3-6) !important; }
-    .FullscreenPlayerDesktop_poster_withSyncLyricsAnimation__bPO0o.FullscreenPlayerDesktop_important__dGfiL,
-    .SyncLyricsCard_root__92qn_{ inset-block-end:35px !important; }
+    
+    .mdbxU6IWInQTsVjwnapn
+    {
+    background:var(--color-light-5) !important;
+    }
+    
+    .xZzTMqgg0qtV5vqUIrkK
+    {
+    background-color:var(--color-dark-3-6) !important;
+    }
+    
+    .FullscreenPlayerDesktop_poster_withSyncLyricsAnimation__bPO0o, .FullscreenPlayerDesktop_important__dGfiL,
+    .SyncLyricsCard_root__92qn_
+    {
+    inset-block-end:35px !important;
+    }
   
-.CommonLayout_root__WC_W1
-{
-  background:radial-gradient(circle at 70% 70%,
-    var(--ym-background-color-secondary-enabled-blur)      0%,
-    var(--ym-background-color-primary-enabled-content)    70%,
-    var(--ym-background-color-primary-enabled-basic)     100%) !important;
-}
-.Navbar_root__chfAR,
-.EntitySidebar_root__D1fGh,
-.Divider_root__99zZ{
-  background:radial-gradient(circle at 70% 70%,
-    var(--ym-background-color-secondary-enabled-blur)      0%,
-    var(--ym-background-color-primary-enabled-content)    70%,
-    var(--ym-background-color-primary-enabled-basic)     100%) !important;
-}
-   .MsLY_qiKofQrwKAr98EC:after,
-   .PlayQueue_root__ponhw:after,
-   .PlayQueue_root__ponhw:before,
-   .PinsList_root_hasPins__3LXlo:after,
-   .PinsList_root_hasPins__3LXlo:before,
-   .NavbarDesktop_scrollableContainer__HLc9D:before,
-   .NavbarDesktop_scrollableContainer__HLc9D:after,
-   .SearchPage_skeletonStickyHeader__SQqeV.SearchPage_important__z3aCa{
-  background:
-    linear-gradient(
-      ◯turn  /* браузер-фикс от YM */
-      var(--fade-background-color,
-           var(--ym-background-color-secondary-enabled-blur)) 0,
-      hsla(0 0% 5% / .90) 100%);
-}
-      .VibeContext_context__Z_82k, 
-      .VibeSettings_toggleSettingsButton__j6fIU,
-      .VibeContext_pinButton__b6SNF{
-          backdrop-filter: blur(25px);
-          background-color: rgba(0, 0, 0, 0.15); 
-      }
+    .CommonLayout_root__WC_W1
+    {
+      background:radial-gradient(circle at 70% 70%,
+        var(--ym-background-color-secondary-enabled-blur)      0%,
+        var(--ym-background-color-primary-enabled-content)    70%,
+        var(--ym-background-color-primary-enabled-basic)     100%) !important;
+    }
 
-      .Root{
-      background: var(--ym-background-color-primary-enabled-content) !important
-      }
+    .Navbar_root__chfAR,
+    .EntitySidebar_root__D1fGh,
+    .Divider_root__99zZ{
+      background:radial-gradient(circle at 70% 70%,
+        var(--ym-background-color-secondary-enabled-blur)      0%,
+        var(--ym-background-color-primary-enabled-content)    70%,
+        var(--ym-background-color-primary-enabled-basic)     100%) !important;
+    }
+
+    .MsLY_qiKofQrwKAr98EC:after,
+    .PlayQueue_root__ponhw:after,
+    .PlayQueue_root__ponhw:before,
+    .PinsList_root_hasPins__3LXlo:after,
+    .PinsList_root_hasPins__3LXlo:before,
+    .NavbarDesktop_scrollableContainer__HLc9D:before,
+    .NavbarDesktop_scrollableContainer__HLc9D:after,
+    .SearchPage_skeletonStickyHeader__SQqeV.SearchPage_important__z3aCa{
+    background:
+      linear-gradient(
+        ◯turn  /* браузер-фикс от YM */
+        var(--fade-background-color,
+        var(--ym-background-color-secondary-enabled-blur)) 0,
+        hsla(0 0% 5% / .90) 100%);
+    }
+
+    .VibeContext_context__Z_82k,
+    .VibeSettings_toggleSettingsButton__j6fIU,
+    .VibeContext_pinButton__b6SNF{
+        backdrop-filter: blur(25px);
+        background-color: rgba(0, 0, 0, 0.15);
+    }
+
+    .Root{
+    background: var(--ym-background-color-primary-enabled-content) !important
+    }
 `;
 
   const applyVars = vars => {
@@ -326,7 +382,7 @@
   /*──────────────────────── effects ───────────────────────*/
   let SETTINGS = {};
   let lastSETTINGS_JSON = '';
-  let lastSrc = '', lastHex = '', lastFullVibe = null; let lastBackgroundImage = null;
+  let lastSrc = '', lastHex = '', lastFullVibe = null; let lastBackgroundImage = null; let lastStaticBackground = null;
   let lastAvatarZoom = null;
   let lastBackgroundURL = '';
   let lastPageURL = location.href;
@@ -372,6 +428,14 @@
       transition: opacity 1s ease;
       pointer-events: none;
     `;
+
+      // static background (no movement)
+      const staticNow = !!SETTINGS?.['Эффекты']?.staticBackground;
+      if (staticNow) {
+        imageLayer.style.setProperty('animation', 'none', 'important');
+        imageLayer.style.setProperty('background-position', 'center', 'important');
+        imageLayer.style.setProperty('background-size', 'cover', 'important');
+      }
 
       const gradient = document.createElement('div');
       gradient.className = 'bg-gradient';
@@ -509,6 +573,13 @@
       lastBackgroundImage = backgroundImageNow;
       if (backgroundImageNow) backgroundReplace(image);
       else removeBackgroundImage();
+    }
+
+
+    const staticBackgroundNow = !!SETTINGS?.['Эффекты']?.staticBackground;
+    if (staticBackgroundNow !== lastStaticBackground || force) {
+      lastStaticBackground = staticBackgroundNow;
+      document.documentElement.classList.toggle('bg-static-mode', staticBackgroundNow);
     }
 
     const avatarZoomNow = !!SETTINGS?.['Эффекты']?.enableAvatarZoom;

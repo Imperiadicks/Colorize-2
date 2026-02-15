@@ -33,6 +33,14 @@
                     "defaultParameter": true
                 },
                 {
+                    "id": "staticBackground",
+                    "name": "Статичный фон (без движения)",
+                    "description": "Отключает анимацию движения фоновой обложки (backgroundReplace). Картинка остаётся статичной.",
+                    "type": "button",
+                    "bool": true,
+                    "defaultParameter": false
+                },
+                {
                     "id": "FullVibe",
                     "name": "Измените размера Vibe",
                     "description": "Изменяет размер Vibe на 88vh, что делает вашу волну/vibe полноразмерным.",

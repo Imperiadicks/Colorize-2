@@ -91,3 +91,33 @@
 {
   z-index: 2;
 }
+.SonataFullscreenControlsDesktop_sonataButton__69FFc,
+.FullscreenPlayerDesktopControls_menuButton__R4cXl,
+.FullscreenPlayerDesktopControls_likeButton__vpJ7S,
+.FullscreenPlayerDesktopControls_playQueueButton__reNOW,
+.FullscreenPlayerDesktopControls_syncLyricsButton__g6E6g,
+.Meta_title__GGBnH, .SonataFullscreenControlsDesktop_playPauseButtonIcon__IkUNX, 
+.ChangeTimecode_slider__P4qmT, .FullscreenPlayerDesktopContent_sliderContainer__FtBZ7, 
+.PlayButton_icon__t_THQ, .PlayButton_root__nYKdN, .PlayButtonWithCover_root__s6Orw,
+.PlayButtonWithCover_playButton__rV9pQ{
+  color: var(--ym-controls-color-secondary-text-enabled);
+}
+[data-test-id="LIKE_BUTTON"] {
+    color: var(--ym-controls-color-secondary-text-enabled) !important;
+}
+.SonataFullscreenControlsDesktop_sonataButton__69FFc[data-test-id="PLAY_BUTTON"], .SonataFullscreenControlsDesktop_sonataButton__69FFc[data-test-id="PAUSE_BUTTON"] {
+    border-color: var(--ym-controls-color-secondary-text-enabled) !important;
+}
+.JkKcxRVvjK7lcakkEliC:before, .JkKcxRVvjK7lcakkEliC:after{
+background-color: var(--ym-controls-color-secondary-text-enabled);
+}
+.SonataFullscreenControlsDesktop_sonataButton__69FFc:disabled{
+  color: var(--ym-controls-color-secondary-text-disabled) !important;
+}
+
+/* Static background mode (handle: staticBackground) */
+.bg-static-mode [class*="bg-cover"] {
+  animation: none !important;
+  background-position: center !important;
+  background-size: cover !important;
+}
