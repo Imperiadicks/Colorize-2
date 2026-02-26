@@ -35,15 +35,15 @@
                 {
                     "id": "staticBackground",
                     "name": "Статичный фон (без движения)",
-                    "description": "Отключает анимацию движения фоновой обложки (backgroundReplace). Картинка остаётся статичной.",
+                    "description": "Отключает анимацию движения фоновой обложки. Картинка остаётся статичной.",
                     "type": "button",
-                    "bool": true,
+                    "bool": false,
                     "defaultParameter": false
                 },
                 {
                     "id": "FullVibe",
-                    "name": "Измените размера Vibe",
-                    "description": "Изменяет размер Vibe на 88vh, что делает вашу волну/vibe полноразмерным.",
+                    "name": "Измените размер Vibe",
+                    "description": "Делает размер Vibe полноразмерным.",
                     "type": "button",
                     "bool": true,
                     "defaultParameter": false
@@ -53,7 +53,7 @@
                     "name": "Включить эффект зума аватара",
                     "description": "Включает или отключает эффект зума при наведении на аватар.",
                     "type": "button",
-                    "bool": true,
+                    "bool": false,
                     "defaultParameter": true
                 }
             ]

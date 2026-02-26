@@ -429,7 +429,6 @@
       pointer-events: none;
     `;
 
-      // static background (no movement)
       const staticNow = !!SETTINGS?.['Эффекты']?.staticBackground;
       if (staticNow) {
         imageLayer.style.setProperty('animation', 'none', 'important');

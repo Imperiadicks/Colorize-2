@@ -542,7 +542,17 @@ const recolor = async (force = false) => {
    ```
 
 
-## 1. `backgroundReplace`
+## 5. `backgroundReplace(imageURL)`
+
+Функция `backgroundReplace()` отвечает за **подмену фонового изображения в блоке VIBE** на обложку текущего трека, с плавной анимацией смены.
+
+Она делает это через создание нескольких слоёв:
+
+- `.bg-layer` — обёртка (контейнер слоёв).
+- `.bg-cover` — слой с картинкой обложки (`background-image`).
+- `.bg-gradient` — поверхностный градиент для затемнения/сведения цветов.
+
+### Код
 
 ```js
 function backgroundReplace(imageURL) {
@@ -570,7 +580,7 @@ function backgroundReplace(imageURL) {
     imageLayer.style.cssText = `
       position: absolute;
       inset: 0;
-      background-image: url("\${imageURL}");
+      background-image: url("${imageURL}");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -578,6 +588,13 @@ function backgroundReplace(imageURL) {
       transition: opacity 1s ease;
       pointer-events: none;
     `;
+
+    const staticNow = !!SETTINGS?.['Эффекты']?.staticBackground;
+    if (staticNow) {
+      imageLayer.style.setProperty('animation', 'none', 'important');
+      imageLayer.style.setProperty('background-position', 'center', 'important');
+      imageLayer.style.setProperty('background-size', 'cover', 'important');
+    }
 
     const gradient = document.createElement('div');
     gradient.className = 'bg-gradient';
@@ -605,7 +622,7 @@ function backgroundReplace(imageURL) {
     target.appendChild(wrapper);
 
     requestAnimationFrame(() => {
-      imageLayer.offsetHeight;
+      imageLayer.offsetHeight; // принудительный reflow
       imageLayer.style.opacity = '1';
     });
   };
@@ -616,78 +633,83 @@ function backgroundReplace(imageURL) {
 }
 ```
 
-### Как работает:
+### Как работает (по шагам)
 
-- Ищет контейнер с классом, содержащим `MainPage_vibe`
-- Загружает изображение и ждёт `onload`
-- Удаляет предыдущий слой с фоном, создаёт новые: `.bg-layer`, `.bg-cover`, `.bg-gradient`
-- Добавляет плавную анимацию замены фона
+1. Находит VIBE-контейнер: `[class*="MainPage_vibe"]`.
+2. Если контейнера нет, `imageURL` пустой, или этот фон уже установлен (`imageURL === lastBackgroundURL`) — выходит.
+3. Загружает картинку через `new Image()` и ждёт `onload`.
+4. После загрузки создаёт слои `.bg-layer`, `.bg-cover`, `.bg-gradient`.
+5. Старые `.bg-layer` плавно скрывает и удаляет.
+6. Новый фон вставляет в VIBE и плавно проявляет через `opacity`.
+
+### Новый флаг: `staticNow`
+
+```js
+const staticNow = !!SETTINGS?.['Эффекты']?.staticBackground;
+```
+
+Зачем он нужен:
+
+- Берёт настройку `staticBackground` из `SETTINGS['Эффекты']`.
+- `?.` защищает от ошибок, если `SETTINGS` / `'Эффекты'` / `staticBackground` отсутствуют.
+- `!!` приводит значение к строгому `true/false`.
+
+Если `staticNow === true`, скрипт **принудительно отключает движение фона** для только что созданного `.bg-cover`:
+
+```js
+imageLayer.style.setProperty('animation', 'none', 'important');
+imageLayer.style.setProperty('background-position', 'center', 'important');
+imageLayer.style.setProperty('background-size', 'cover', 'important');
+```
+
+То есть картинка становится статичной сразу при создании слоя, независимо от CSS-анимаций, которые могут быть назначены на `.bg-cover`.
 
 ### Как изменить:
 
----
-
-1. **Изменить точки градиента в `bg-gradient`**  
-   Позволяет управлять направлением и формой градиента.  
-   Например, заменить `circle at 70% 70%` на:
-
+1. Скорость появления новой обложки  
+   Меняй `transition` у `imageLayer`:
    ```js
-   background: radial-gradient(ellipse at center, ...);
+   transition: opacity 0.5s ease;   // быстрее
+   transition: opacity 2s ease;     // медленнее
    ```
 
-   Это даст более мягкий и центрированный эффект.
-
----
-
-2. **Изменить длительность анимации появления фона**  
-   Управляет плавностью появления нового изображения.
-
+2. Скорость исчезновения старого слоя  
+   Меняй `layer.style.transition` и таймер удаления:
    ```js
-   imageLayer.style.transition = 'opacity 2s ease-in-out';
+   layer.style.transition = 'opacity 1.2s ease';
+   setTimeout(() => layer.remove(), 1300);
    ```
 
-   Увеличение времени сделает смену более медленной и заметной.
-
----
-
-3. **Изменить прозрачность градиента**  
-   Контролирует, насколько сильно затемняется фон.
-
+3. Силу затемнения (насколько “гасится” картинка)  
+   Меняй `opacity` у `gradient`:
    ```js
-   gradient.style.opacity = '0.4';
+   gradient.style.opacity = '0.35'; // слабее
+   gradient.style.opacity = '0.75'; // сильнее
    ```
 
-   Чем меньше значение — тем ярче изображение под градиентом.
-
----
-
-4. **Увеличить масштаб фона (эффект зума)**  
-   Добавляет визуальный эффект приближения картинки.
-
+4. Форму/позицию градиента  
+   Меняй `radial-gradient(circle at 70% 70%, ...)`:
    ```js
-   imageLayer.style.transform = 'scale(1.1)';
-   imageLayer.style.transition += ', transform 1s ease';
+   background: radial-gradient(circle at 50% 50%, ...); // центр
+   background: radial-gradient(circle at 20% 80%, ...); // смещение
    ```
 
-   Полезно, если хотите усилить фокус на фоне.
-
----
-
-5. **Добавить задержку перед заменой**  
-   Может понадобиться, если есть анимации перехода между треками.
-
-   ```js
-   setTimeout(() => {
-     requestAnimationFrame(() => {
-       imageLayer.offsetHeight;
-       imageLayer.style.opacity = '1';
-     });
-   }, 100);
+5. Статичный фон только через CSS (без inline‑переопределений)  
+   Если хочешь, чтобы “статичность” работала строго через `.bg-static-mode` в `style.css`, убери блок `staticNow` и оставь только CSS‑правило:
+   ```css
+   .bg-static-mode [class*="bg-cover"] { animation: none !important; }
    ```
 
-   Позволяет отложить начало появления фона на 100 мс.
+6. Приоритет слоёв (что выше/ниже)  
+   Меняй `z-index` у `wrapper`/`gradient` (и при необходимости добавь `z-index` для `imageLayer`):
+   ```js
+   wrapper.style.zIndex = '0';
+   gradient.style.zIndex = '2';
+   imageLayer.style.zIndex = '1';
+   ```
+
 ---
-### 2. `setupAvatarZoomEffect`
+### 6. `setupAvatarZoomEffect`
 
 ```js
 function setupAvatarZoomEffect() {
@@ -722,7 +744,7 @@ avatar.style.transform = `scale(1.2)`;
 if (window.innerWidth < 768) return;
 ```
 ---
-### 3. `FullVibe()`
+### 7. `FullVibe()`
 
 ```js
 function FullVibe() {
@@ -803,7 +825,7 @@ cursor: zoom-in;
 ---
 
 ```css
-.kc5CjvU5hT9KEj0iTt3C:hover, 
+.kc5CjvU5hT9KEj0iTt3C:hover,
 .kc5CjvU5hT9KEj0iTt3C:focus {
 backdrop-filter: none;
 }
@@ -813,7 +835,7 @@ backdrop-filter: none;
 ---
 
 ```css
-.PlayButton_root__nYKdN:not(:disabled), 
+.PlayButton_root__nYKdN:not(:disabled),
 .PlayButton_root__nYKdN:not(:disabled) {
 transition: all 0.2s ease-in-out;
 }
@@ -829,7 +851,7 @@ transition: all 0.2s ease-in-out;
  .PlaylistPage_averageColorBackground__3wEkw, .ArtistPage_averageColorBackground__wXTSY
 {
   background: linear-gradient(var(--ym-controls-color-secondary-default-enabled, var(--ym-background-color-secondary-enabled-blur)) 0, transparent 100%)
-} 
+}
 ```
 **Пояснение:** добавляет градиент шапке и скроллу к странице **альбома** и **артиста**.
 
@@ -918,5 +940,58 @@ display: none;
 }
 ```
 **Пояснение:** Скрывает полосу прокрутки для того, чтоб изображение гармонично встало в MAIN.
+
+---
+
+```css
+.SonataFullscreenControlsDesktop_sonataButton__69FFc,
+.FullscreenPlayerDesktopControls_menuButton__R4cXl,
+.FullscreenPlayerDesktopControls_likeButton__vpJ7S,
+.FullscreenPlayerDesktopControls_playQueueButton__reNOW,
+.FullscreenPlayerDesktopControls_syncLyricsButton__g6E6g,
+.Meta_title__GGBnH, .SonataFullscreenControlsDesktop_playPauseButtonIcon__IkUNX, 
+.ChangeTimecode_slider__P4qmT, .FullscreenPlayerDesktopContent_sliderContainer__FtBZ7, 
+.PlayButton_icon__t_THQ, .PlayButton_root__nYKdN, .PlayButtonWithCover_root__s6Orw,
+.PlayButtonWithCover_playButton__rV9pQ{
+  color: var(--ym-controls-color-secondary-text-enabled);
+}
+[data-test-id="LIKE_BUTTON"] {
+    color: var(--ym-controls-color-secondary-text-enabled) !important;
+}
+.SonataFullscreenControlsDesktop_sonataButton__69FFc[data-test-id="PLAY_BUTTON"], .SonataFullscreenControlsDesktop_sonataButton__69FFc[data-test-id="PAUSE_BUTTON"] {
+    border-color: var(--ym-controls-color-secondary-text-enabled) !important;
+}
+.JkKcxRVvjK7lcakkEliC:before, .JkKcxRVvjK7lcakkEliC:after{
+background-color: var(--ym-controls-color-secondary-text-enabled);
+}
+.SonataFullscreenControlsDesktop_sonataButton__69FFc:disabled{
+  color: var(--ym-controls-color-secondary-text-disabled) !important;
+}
+```
+**Пояснение:** Всё это для того, чтоб изменить цвета в аддоне "BetterPlayer". Так как некоторые кнопки создаются отдельно в аддоне, и у них может не быть [class], то изменять приходится при помощи [data-test-id], есть исключение, по типу кнопки [data-test-id="PLAY_BUTTON"] и [data-test-id="PAUSE_BUTTON"] - она изменяется так, из-за того, что автор создал так, и так как кнопка может менять своё состояние после нажатия, нужно контролировать это именно таким образом. [:disabled] - класс с этим это состояния кнопки, когда кнопка не активна (Это кнопка "лирика"), чтоб посмотреть как она работает, найдите песню без текста. [:after], [:before] - классы с этим обозначением, нужны для ползунка.
+
+---
+
+```css
+.bg-static-mode [class*="bg-cover"] {
+  animation: none !important;
+  background-position: center !important;
+  background-size: cover !important;
+}
+```
+**Пояснение:** Нужно для того, чтоб остановить движения для картинки на "Главной".
+
+---
+
+```css
+.cover-download-button, .cover-download-button:focus{
+  background-color: var(--ym-controls-color-secondary-card-enabled);
+  color: var(--ym-controls-color-secondary-text-enabled) !important;
+}
+.cover-download-button svg{
+  fill: var(--ym-controls-color-secondary-text-enabled);
+}
+```
+**Пояснение:** Нужно для аддона "CoverDownloader", изменяет цвет кнопки: svg и фон.
 
 ---

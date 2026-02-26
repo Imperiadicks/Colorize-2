@@ -68,9 +68,9 @@
   box-shadow: inset 0 0 40px 10px rgba(0, 0, 0, 0.4) !important;
   border-radius: 12px;
 }
-/* .PlayerBarDesktopWithBackgroundProgressBar_player__ASKKs {
+ .PlayerBarDesktopWithBackgroundProgressBar_player__ASKKs {
   border-top: 1px solid rgba(255, 255, 255, 0.05);
-} */
+} 
 .WithTopBanner_root__P__x3 {
   background: radial-gradient(circle at 65% 65%,
     var(--ym-background-color-secondary-enabled-blur) 0%,
@@ -114,10 +114,15 @@ background-color: var(--ym-controls-color-secondary-text-enabled);
 .SonataFullscreenControlsDesktop_sonataButton__69FFc:disabled{
   color: var(--ym-controls-color-secondary-text-disabled) !important;
 }
-
-/* Static background mode (handle: staticBackground) */
 .bg-static-mode [class*="bg-cover"] {
   animation: none !important;
   background-position: center !important;
   background-size: cover !important;
+}
+.cover-download-button, .cover-download-button:focus{
+  background-color: var(--ym-controls-color-secondary-card-enabled);
+  color: var(--ym-controls-color-secondary-text-enabled) !important;
+}
+.cover-download-button svg{
+  fill: var(--ym-controls-color-secondary-text-enabled);
 }

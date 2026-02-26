@@ -8,7 +8,7 @@
     "imperiadicks"
   ],
   "description": "Улучшенный скрипт Colorize",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "css": "style.css",
   "script": "script.js",
   "type": "theme",
@@ -17,5 +17,6 @@
   ],
   "dependencies": [],
   "allowedUrls": [],
-  "supportedVersions": []
+  "supportedVersions": [],
+  "fromPext": true
 }
