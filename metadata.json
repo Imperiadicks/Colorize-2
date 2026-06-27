@@ -1,22 +1,26 @@
 {
-  "name": "Colorize 2",
-  "image": "image.png",
-  "banner": "banner.png",
-  "libraryLogo": "",
-  "author": [
-    "maks1mio",
-    "imperiadicks"
-  ],
-  "description": "Улучшенный скрипт Colorize",
-  "version": "1.1.6",
-  "css": "style.css",
-  "script": "script.js",
-  "type": "theme",
-  "tags": [
-    "PulseSync"
-  ],
-  "dependencies": [],
-  "allowedUrls": [],
-  "supportedVersions": [],
-  "fromPext": true
+    "name": "Colorize 2",
+    "image": "image.png",
+    "banner": "banner.png",
+    "libraryLogo": "",
+    "author": "imperiadicks",
+    "description": "Улучшенный скрипт Colorize",
+    "version": "1.1.7",
+    "css": "style.css",
+    "script": "script.js",
+    "type": "theme",
+    "tags": [
+        "PulseSync"
+    ],
+    "dependencies": [],
+    "conflictsWith": [],
+    "allowedUrls": [],
+    "supportedVersions": [
+        ">=5.75.0"
+    ],
+    "fromPext": true,
+    "installSource": "store",
+    "id": "5510a44e-9425-465d-8e1a-e929b1da27ec",
+    "packageHash": "7eb53c63ec2425cca010118f1b7389c32dd81ca58fe41ea41c83aac64912cc03",
+    "storeAddonId": "5510a44e-9425-465d-8e1a-e929b1da27ec"
 }

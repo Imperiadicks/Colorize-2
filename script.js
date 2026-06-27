@@ -32,51 +32,183 @@
   };
 
   /*──────────────────────── settings ────────────────────────*/
-  const HANDLE = 'Colorize 2';
+  const ADDON_NAME = 'Colorize 2';
+  const OLD_VIBE_SELECTOR = '[class*="MainPage_vibe"], [data-test-id="VIBE_BLOCK"]';
+  const NEW_WAVE_SELECTOR = '[class*="VibePage_root"], [class*="DefaultLayout_rootNewWave"]';
+  let lastAppliedVars = null;
+  let lastNewWaveState = null;
 
-  const getSettings = async () => {
-    try {
-      const r = await fetch(`http://localhost:2007/get_handle?name=${HANDLE}`);
-      const j = await r.json();
-      const s = {};
-      j?.data?.sections?.forEach(sec => {
-        s[sec.title] = {};
-        sec.items.forEach(it => {
-          if ('bool' in it) s[sec.title][it.id] = it.bool;
-          if ('input' in it) s[sec.title][it.id] = it.input;
-        });
-      });
-      return s;
-    } catch (e) {
-      LOG('settings error', e);
-      return {};
+  function getSettings() {
+    const api = window.pulsesyncApi;
+    const store = api && typeof api.getSettings === 'function'
+      ? api.getSettings(ADDON_NAME)
+      : null;
+    const current = store && typeof store.getCurrent === 'function'
+      ? store.getCurrent()
+      : {};
+
+    const val = (key, fallback) => {
+      const entry = current[key];
+      if (entry && typeof entry === 'object' && !Array.isArray(entry)) {
+        if (entry.value !== undefined) return entry.value;
+        if (entry.bool !== undefined) return entry.bool;
+        if (entry.input !== undefined) return entry.input;
+        if (entry.default !== undefined) return entry.default;
+        if (entry.defaultParameter !== undefined) return entry.defaultParameter;
+      }
+      return entry !== undefined ? entry : fallback;
+    };
+
+    return {
+      useCustomColor: val('useCustomColor', false),
+      baseColor: val('baseColor', '#d56767'),
+      enableBackgroundImage: val('enableBackgroundImage', false),
+      staticBackground: val('staticBackground', false),
+      FullVibe: val('FullVibe', true),
+      enableAvatarZoom: val('enableAvatarZoom', false),
+      onChange: store && typeof store.onChange === 'function'
+        ? store.onChange.bind(store)
+        : function () {}
+    };
+  }
+
+  function isNewWavePage() {
+    return !!document.querySelector(NEW_WAVE_SELECTOR);
+  }
+
+  function getOldVibeBlock() {
+    if (isNewWavePage()) return null;
+    return document.querySelector(OLD_VIBE_SELECTOR);
+  }
+
+  function getVibeBackgroundTarget() {
+    const newWaveRoot = document.querySelector('[class*="VibePage_root"]');
+    if (newWaveRoot) return newWaveRoot;
+
+    if (document.querySelector('[class*="DefaultLayout_rootNewWave"]')) return null;
+
+    return document.querySelector(OLD_VIBE_SELECTOR);
+  }
+
+  function clearOldVibeSize() {
+    document.querySelectorAll(OLD_VIBE_SELECTOR).forEach(vibe => {
+      if (vibe.style.getPropertyValue('height')) vibe.style.removeProperty('height');
+      if (vibe.style.getPropertyValue('min-height')) vibe.style.removeProperty('min-height');
+    });
+  }
+
+  function syncWaveLayoutState() {
+    const newWave = isNewWavePage();
+    if (newWave !== lastNewWaveState) {
+      document.documentElement.classList.toggle('colorize-new-wave-page', newWave);
+      lastNewWaveState = newWave;
     }
-  };
+    if (newWave) clearOldVibeSize();
+  }
 
   /*──────────────────────── cover helpers ───────────────────*/
+  const COVER_IMAGE_SELECTORS = [
+    'div[data-test-id="PLAYERBAR_DESKTOP_COVER_CONTAINER"] img',
+    '[data-test-id="FULLSCREEN_PLAYER_MODAL"] img[data-test-id="ENTITY_COVER_IMAGE"]',
+    'img[data-test-id="ENTITY_COVER_IMAGE"]',
+    'img[class*="AlbumCover_cover__"][src*="avatars.yandex.net/get-music-content"]',
+    'img[class*="AlbumCover_cover__"][srcset*="avatars.yandex.net/get-music-content"]',
+    'img[src*="avatars.yandex.net/get-music-content"]',
+    'img[srcset*="avatars.yandex.net/get-music-content"]'
+  ];
+
+  const coverSrcFromImg = (img) => {
+    if (!img) return '';
+    const src = img.currentSrc || img.src || img.getAttribute?.('src') || '';
+    if (src) return src;
+    const srcset = img.getAttribute?.('srcset') || '';
+    return srcset.split(',')[0]?.trim().split(/\s+/)[0] || '';
+  };
+
+  const normalizeCoverURL = (src, size = '1000x1000') => String(src || '')
+    .replace(/\/(?:50x50|80x80|100x100|200x200|300x300|400x400|800x800|1000x1000)(?=[/?]|$)/g, `/${size}`);
+
+  const coverScore = (img) => {
+    if (!img || !img.isConnected) return -1;
+
+    const src = coverSrcFromImg(img);
+    if (!src) return -1;
+
+    const cls = String(img.className || '');
+    const rect = img.getBoundingClientRect?.() || { width: 0, height: 0, top: 0, bottom: 0 };
+    const style = getComputedStyle(img);
+    const visible = rect.width > 20 && rect.height > 20 && style.display !== 'none' && style.visibility !== 'hidden';
+
+    let score = 0;
+    if (visible) score += 120;
+    if (src.includes('avatars.yandex.net/get-music-content')) score += 90;
+    if (cls.includes('AlbumCover_cover__')) score += 70;
+    if (img.closest?.('div[data-test-id="PLAYERBAR_DESKTOP_COVER_CONTAINER"], [class*="PlayerBar"], [class*="playerBar"]')) score += 130;
+    if (img.closest?.('[class*="VibePage_root"], [class*="DefaultLayout_rootNewWave"]')) score += 115;
+    if (img.closest?.('[data-test-id="FULLSCREEN_PLAYER_MODAL"]')) score += 100;
+    if (rect.top > window.innerHeight * 0.45 || rect.bottom > window.innerHeight * 0.62) score += 25;
+    if (rect.width <= 280 && rect.height <= 280) score += 10;
+
+    return score;
+  };
+
+  let coverNodeCache = null;
+  let coverNodeCacheTime = 0;
+
+  const getCoverNode = () => {
+    const now = performance.now?.() || Date.now();
+    if (
+      coverNodeCache &&
+      coverNodeCache.isConnected &&
+      coverSrcFromImg(coverNodeCache) &&
+      now - coverNodeCacheTime < 180
+    ) {
+      return coverNodeCache;
+    }
+
+    const nodes = new Set();
+    COVER_IMAGE_SELECTORS.forEach(selector => {
+      try {
+        document.querySelectorAll(selector).forEach(img => nodes.add(img));
+      } catch {}
+    });
+
+    let bestNode = null;
+    let bestScore = -1;
+    nodes.forEach(img => {
+      const score = coverScore(img);
+      if (score > bestScore) {
+        bestScore = score;
+        bestNode = img;
+      }
+    });
+    coverNodeCache = bestScore >= 0 ? bestNode : null;
+    coverNodeCacheTime = now;
+
+    return coverNodeCache;
+  };
+
   const coverURL = () => {
-    const imgMini = document.querySelector(
-      'div[data-test-id="PLAYERBAR_DESKTOP_COVER_CONTAINER"] img'
-    );
-    if (imgMini?.src) return imgMini.src;
-
-    const imgFull = document.querySelector(
-      '[data-test-id="FULLSCREEN_PLAYER_MODAL"] img[data-test-id="ENTITY_COVER_IMAGE"]'
-    );
-    if (imgFull?.src) return imgFull.src;
-
-    const any = document.querySelector('img[data-test-id="ENTITY_COVER_IMAGE"]');
-    return any?.src || null;
+    const src = coverSrcFromImg(getCoverNode());
+    return src ? normalizeCoverURL(src, '400x400') : null;
   };
 
   const CANVAS = document.createElement('canvas');
   CANVAS.width = CANVAS.height = 64;
   const CTX = CANVAS.getContext('2d');
   const CACHE = new Map();
+  const MAX_CACHE_ENTRIES = 80;
 
   const normL = o => ({ ...o, l: Math.min(85, Math.max(20, o.l)) });
 
+  function cacheColors(src, result) {
+    CACHE.set(src, result);
+    if (CACHE.size <= MAX_CACHE_ENTRIES) return;
+    CACHE.delete(CACHE.keys().next().value);
+  }
+
   const colorsFromCover = (src) => {
+    if (!src) return Promise.resolve(null);
     if (CACHE.has(src)) return Promise.resolve(CACHE.get(src));
 
     return new Promise((res) => {
@@ -133,7 +265,7 @@
 
           const resultColor = normL(dominant);
           const result = [resultColor, resultColor];
-          CACHE.set(src, result);
+          cacheColors(src, result);
           res(result);
         } catch (e) {
           console.warn('[colorsFromCover] ошибка обработки:', e);
@@ -341,6 +473,8 @@
 `;
 
   const applyVars = vars => {
+    lastAppliedVars = vars;
+
     let st = document.getElementById('colorize-style');
     if (!st) {
       st = document.createElement('style');
@@ -350,8 +484,106 @@
     let css = '.ym-dark-theme{\n';
     Object.entries(vars).forEach(([k, v]) => css += `  ${k}: ${v} !important;\n`);
     css += YM_MAP + '\n}';
+    css += buildNewWavePaletteCss(vars);
     st.textContent = css;
+    applyInlinePaletteVars(vars);
   };
+
+  const PALETTE_LEAK_TARGETS = [
+    'body',
+    '.ym-dark-theme',
+    '.ym-light-theme',
+    '[class*="Content_rootOld_newVibe"]',
+    '[class*="Content_rootOld"][class*="newVibe"]',
+    '[class*="DefaultLayout_rootNewWave"]',
+    '[class*="VibePage_root"]',
+    '[class*="VibePage"]',
+    '[data-test-id="MAIN_PAGE"]',
+    '[class*="VibePlayerBar"]',
+    '[class*="PlayerBar"]'
+  ].join(',');
+
+  const INLINE_YM_VARS = {
+    '--ym-background-color-primary-enabled-basic': 'var(--color-dark-8)',
+    '--ym-background-color-primary-enabled-content': 'var(--color-dark-6)',
+    '--ym-background-color-primary-enabled-popover': 'var(--color-dark-7-9)',
+    '--ym-background-color-primary-enabled-vibe': 'var(--color-dark-6)',
+    '--ym-background-color-secondary-enabled-blur': 'var(--color-light-1)',
+    '--ym-controls-color-primary-default-enabled': 'var(--color-light-10)',
+    '--ym-controls-color-primary-default-hovered': 'var(--color-light-8)',
+    '--ym-controls-color-primary-text-enabled': 'var(--color-light-10-5)',
+    '--ym-controls-color-primary-text-enabled_variant': 'var(--color-light-10-10)',
+    '--ym-controls-color-primary-text-hovered': 'var(--color-light-7)',
+    '--ym-controls-color-secondary-default-enabled': 'var(--color-dark-5)',
+    '--ym-controls-color-secondary-default-hovered': 'var(--color-dark-3)',
+    '--ym-controls-color-secondary-card-enabled': 'var(--color-dark-5-7)',
+    '--ym-controls-color-secondary-card-hovered': 'var(--color-light-5-5)',
+    '--ym-controls-color-secondary-text-enabled': 'var(--color-light-10-10)',
+    '--ym-controls-color-secondary-text-enabled_variant': 'var(--color-light-8)',
+    '--ym-controls-color-secondary-on_default-enabled': 'var(--color-light-10-10)',
+    '--ym-controls-color-secondary-on_default-hovered': 'var(--color-light-10-10)',
+    '--ym-logo-color-primary-variant': 'var(--color-light-10)',
+    '--ym-slider-color-primary-enabled': 'var(--color-light-8)',
+    '--player-average-color-background': 'var(--color-dark-5)',
+    '--average-color-background': 'var(--color-dark-5)',
+    '--vibe-gradient-stop-0': 'var(--color-dark-8)',
+    '--vibe-gradient-stop-1': 'var(--color-dark-5)',
+    '--vibe-gradient-stop-2': 'var(--color-light-1)'
+  };
+
+  const NEW_WAVE_PALETTE_SCOPE = [
+    'html.colorize-new-wave-page',
+    'html.colorize-new-wave-page [class*="Content_rootOld_newVibe"]',
+    'html.colorize-new-wave-page [class*="Content_rootOld"][class*="newVibe"]',
+    'html.colorize-new-wave-page [class*="DefaultLayout_rootNewWave"]',
+    'html.colorize-new-wave-page [class*="VibePage_root"]',
+    'html.colorize-new-wave-page [data-test-id="MAIN_PAGE"]'
+  ].join(',\n');
+
+  function buildNewWavePaletteCss(vars) {
+    let css = `\n${NEW_WAVE_PALETTE_SCOPE}{\n`;
+    Object.entries(vars).forEach(([key, value]) => {
+      css += `  ${key}: ${value} !important;\n`;
+    });
+    Object.entries(INLINE_YM_VARS).forEach(([key, value]) => {
+      css += `  ${key}: ${value} !important;\n`;
+    });
+    css += '}\n';
+    return css;
+  }
+
+  function applyInlinePaletteVars(vars) {
+    if (!vars) return;
+
+    cleanupInlinePaletteLeaks(vars);
+
+    Object.entries(vars).forEach(([key, value]) => {
+      document.documentElement.style.setProperty(key, value, 'important');
+    });
+    Object.entries(INLINE_YM_VARS).forEach(([key, value]) => {
+      document.documentElement.style.setProperty(key, value, 'important');
+    });
+  }
+
+  function cleanupInlinePaletteLeaks(vars) {
+    const keys = [...Object.keys(vars || {}), ...Object.keys(INLINE_YM_VARS)];
+
+    try {
+      document.querySelectorAll(PALETTE_LEAK_TARGETS).forEach(node => {
+        if (!node?.style || node === document.documentElement) return;
+        const inlineStyle = node.getAttribute('style') || '';
+        if (
+          !inlineStyle.includes('--color-') &&
+          !inlineStyle.includes('--ym-') &&
+          !inlineStyle.includes('--player-average-color-background') &&
+          !inlineStyle.includes('--vibe-gradient-stop-')
+        ) {
+          return;
+        }
+        keys.forEach(key => node.style.removeProperty(key));
+      });
+    } catch {}
+  }
 
   /*───────── overlay with var(--grad-main) ─────────*/
   function ensureGradientOverlay() {
@@ -385,25 +617,41 @@
   let lastSrc = '', lastHex = '', lastFullVibe = null; let lastBackgroundImage = null; let lastStaticBackground = null;
   let lastAvatarZoom = null;
   let lastBackgroundURL = '';
+  let pendingBackgroundURL = '';
   let lastPageURL = location.href;
 
   async function getHiResCover() {
-    const img = document.querySelector('[class*="PlayerBarDesktopWithBackgroundProgressBar_cover"] img');
-    if (img && img.src.includes('/100x100')) {
-      return img.src.replace('/100x100', '/1000x1000');
-    }
-    return null;
+    const src = coverSrcFromImg(getCoverNode());
+    return src ? normalizeCoverURL(src, '1000x1000') : null;
+  }
+
+  function cleanupForeignBackgroundLayers(target) {
+    document.querySelectorAll('.bg-layer').forEach(layer => {
+      if (target && target.contains(layer)) return;
+      layer.remove();
+    });
   }
 
   function backgroundReplace(imageURL) {
-    const target = document.querySelector('[class*="MainPage_vibe"]');
-    if (!target || !imageURL || imageURL === lastBackgroundURL) return;
+    const target = getVibeBackgroundTarget();
+    cleanupForeignBackgroundLayers(target);
+    if (!target || !imageURL) {
+      if (!target) lastBackgroundURL = '';
+      return;
+    }
+    if (imageURL === lastBackgroundURL && target.querySelector('.bg-layer')) return;
+    if (imageURL === pendingBackgroundURL) return;
+    pendingBackgroundURL = imageURL;
+    target.style.setProperty('position', 'relative', 'important');
+    target.style.setProperty('overflow', 'hidden', 'important');
+    target.style.setProperty('isolation', 'isolate', 'important');
 
     const img = new Image();
     img.crossOrigin = 'anonymous';
-    img.src = imageURL;
 
     img.onload = () => {
+      pendingBackgroundURL = '';
+      if (!SETTINGS.enableBackgroundImage || !target.isConnected || target !== getVibeBackgroundTarget()) return;
       lastBackgroundURL = imageURL;
 
       const wrapper = document.createElement('div');
@@ -413,6 +661,8 @@
       inset: 0;
       z-index: 0;
       pointer-events: none;
+      overflow: hidden;
+      border-radius: inherit;
     `;
 
       const imageLayer = document.createElement('div');
@@ -427,9 +677,10 @@
       opacity: 0;
       transition: opacity 1s ease;
       pointer-events: none;
+      border-radius: inherit;
     `;
 
-      const staticNow = !!SETTINGS?.['Эффекты']?.staticBackground;
+      const staticNow = !!SETTINGS.staticBackground;
       if (staticNow) {
         imageLayer.style.setProperty('animation', 'none', 'important');
         imageLayer.style.setProperty('background-position', 'center', 'important');
@@ -448,6 +699,7 @@
       opacity: 0.6;
       pointer-events: none;
       z-index: 1;
+      border-radius: inherit;
     `;
 
       const oldLayers = [...target.querySelectorAll('.bg-layer')];
@@ -459,7 +711,7 @@
 
       wrapper.appendChild(imageLayer);
       wrapper.appendChild(gradient);
-      target.appendChild(wrapper);
+      target.insertBefore(wrapper, target.firstChild);
 
       requestAnimationFrame(() => {
         imageLayer.offsetHeight;
@@ -468,12 +720,16 @@
     };
 
     img.onerror = () => {
+      if (pendingBackgroundURL === imageURL) pendingBackgroundURL = '';
       console.warn('[backgroundReplace] Ошибка загрузки изображения:', imageURL);
     };
+    img.src = imageURL;
   }
 
   function removeBackgroundImage() {
     const layers = document.querySelectorAll('.bg-layer');
+    lastBackgroundURL = null;
+    pendingBackgroundURL = '';
     if (!layers.length) return;
 
     layers.forEach(layer => {
@@ -483,6 +739,7 @@
     });
 
     lastBackgroundURL = null;
+    pendingBackgroundURL = '';
     console.log("[removeBackgroundImage] Фоновое изображение удалено.");
   }
 
@@ -519,7 +776,7 @@
   }
 
   function FullVibe() {
-    const vibe = document.querySelector('[class*="MainPage_vibe"]');
+    const vibe = getOldVibeBlock();
     if (vibe) {
       vibe.style.setProperty("height", "88.35vh", "important");
       console.log("[FullVibe] включено увеличение VIBE до 88.35vh.");
@@ -527,29 +784,98 @@
   }
 
   function RemoveFullVibe() {
-    const vibe = document.querySelector('[class*="MainPage_vibe"]');
+    const vibe = getOldVibeBlock();
     if (vibe) {
       vibe.style.setProperty("height", "0", "important");
       console.log("[RemoveFullVibe] отключение VIBE до 0.");
     }
   }
 
+  function syncFullVibe(force = false) {
+    const fullVibeNow = !!SETTINGS.FullVibe;
+    const oldVibe = getOldVibeBlock();
+
+    if (isNewWavePage()) {
+      clearOldVibeSize();
+      lastFullVibe = fullVibeNow;
+      return;
+    }
+
+    const currentHeight = oldVibe?.style.getPropertyValue('height');
+    const sizeApplied = fullVibeNow
+      ? currentHeight === '88.35vh'
+      : currentHeight === '0' || currentHeight === '0px';
+
+    if (fullVibeNow !== lastFullVibe || force || (oldVibe && !sizeApplied)) {
+      lastFullVibe = fullVibeNow;
+      if (fullVibeNow) FullVibe();
+      else RemoveFullVibe();
+    }
+  }
+
+  let recolorTimer = null;
+  let recolorRunning = false;
+  let recolorQueued = false;
+  let recolorForceQueued = false;
+
+  function scheduleRecolor(force = false, delay = 120) {
+    recolorForceQueued = recolorForceQueued || force;
+    if (recolorTimer) clearTimeout(recolorTimer);
+    recolorTimer = setTimeout(runScheduledRecolor, force ? 0 : delay);
+  }
+
+  async function runScheduledRecolor() {
+    if (recolorTimer) {
+      clearTimeout(recolorTimer);
+      recolorTimer = null;
+    }
+
+    if (recolorRunning) {
+      recolorQueued = true;
+      return;
+    }
+
+    recolorRunning = true;
+    const force = recolorForceQueued;
+    recolorForceQueued = false;
+
+    try {
+      await recolor(force);
+    } catch (e) {
+      LOG('recolor error', e);
+    } finally {
+      recolorRunning = false;
+      if (recolorQueued || recolorForceQueued) {
+        const nextForce = recolorForceQueued;
+        recolorQueued = false;
+        scheduleRecolor(nextForce, 0);
+      }
+    }
+  }
+
 
   const recolor = async (force = false) => {
+    syncWaveLayoutState();
+    syncFullVibe(force);
+
     const src = coverURL();
-    const useHex = SETTINGS['Тема']?.useCustomColor;
-    const hex = SETTINGS['Тема']?.baseColor || '';
+    const useHex = SETTINGS.useCustomColor;
+    const hex = SETTINGS.baseColor || '';
 
     let base, gradC1, gradC2;
+    let paletteChanged = force;
 
     if (useHex) {
-      if (!force && hex === lastHex) return;
+      paletteChanged = force || hex !== lastHex;
+      if (paletteChanged) {
       gradC1 = gradC2 = base = normL(parseHEX(hex));
       lastHex = hex;
       console.log("[recolor]  ", 'HEX-режим:', hex, base);
+      }
     }
     else {
-      if (!force && src === lastSrc) return;
+      paletteChanged = force || src !== lastSrc;
+      if (paletteChanged) {
       const pair = await colorsFromCover(src) || fallbackHSL();
       if (!pair) return;
       [gradC1, gradC2] = pair;
@@ -560,109 +886,175 @@
       };
       lastSrc = src;
       console.log("[recolor]  ", 'Cover-режим:', src, gradC1, gradC2, '→ base', base);
+      }
     }
 
-    applyVars(buildVars(base));
-    ensureGradientOverlay();
+    if (paletteChanged) {
+      applyVars(buildVars(base));
+      ensureGradientOverlay();
+    }
 
-    const image = await getHiResCover();
-
-    const backgroundImageNow = !!SETTINGS?.['Эффекты']?.enableBackgroundImage;
+    const backgroundImageNow = !!SETTINGS.enableBackgroundImage;
+    const image = backgroundImageNow ? await getHiResCover() : null;
     if (backgroundImageNow !== lastBackgroundImage || force) {
       lastBackgroundImage = backgroundImageNow;
-      if (backgroundImageNow) backgroundReplace(image);
-      else removeBackgroundImage();
+      if (!backgroundImageNow) removeBackgroundImage();
     }
+    if (backgroundImageNow && image) backgroundReplace(image);
 
 
-    const staticBackgroundNow = !!SETTINGS?.['Эффекты']?.staticBackground;
+    const staticBackgroundNow = !!SETTINGS.staticBackground;
     if (staticBackgroundNow !== lastStaticBackground || force) {
       lastStaticBackground = staticBackgroundNow;
       document.documentElement.classList.toggle('bg-static-mode', staticBackgroundNow);
     }
 
-    const avatarZoomNow = !!SETTINGS?.['Эффекты']?.enableAvatarZoom;
+    const avatarZoomNow = !!SETTINGS.enableAvatarZoom;
     if (avatarZoomNow !== lastAvatarZoom || force) {
       lastAvatarZoom = avatarZoomNow;
       if (avatarZoomNow) setupAvatarZoomEffect();
       else removeAvatarZoomEffect();
     }
-    const fullVibeNow = !!SETTINGS?.['Эффекты']?.FullVibe;
-    if (fullVibeNow !== lastFullVibe || force) {
-      lastFullVibe = fullVibeNow;
-      if (fullVibeNow) FullVibe();
-      else RemoveFullVibe();
-    }
   };
 
-  const init = async () => {
-    SETTINGS = await getSettings();
+  const handleSettingsChange = () => {
+    const newSettings = getSettings();
+    const newJSON = JSON.stringify(newSettings);
+    if (newJSON === lastSETTINGS_JSON) return;
+
+    SETTINGS = newSettings;
+    lastSETTINGS_JSON = newJSON;
+    LOG('Настройки изменились -> перекрашиваем');
+    scheduleRecolor(true);
+  };
+
+  const initSettings = async () => {
+    if (!window.pulsesyncApi || typeof window.pulsesyncApi.getSettings !== 'function') {
+      setTimeout(initSettings, 1000);
+      return;
+    }
+
+    let api = null;
+    try {
+      api = window.pulsesyncApi.getSettings(ADDON_NAME);
+    } catch (e) {
+      LOG('settings api error', e);
+    }
+    if (!api || typeof api.onChange !== 'function') {
+      setTimeout(initSettings, 1000);
+      return;
+    }
+
+    SETTINGS = getSettings();
     lastSETTINGS_JSON = JSON.stringify(SETTINGS);
+    syncWaveLayoutState();
     checkVibeReturn();
-    await recolor(true);
+    scheduleRecolor(true, 0);
+    await runScheduledRecolor();
+    SETTINGS.onChange(handleSettingsChange);
   };
 
   document.readyState === 'loading'
-    ? document.addEventListener('DOMContentLoaded', init)
-    : init();
+    ? document.addEventListener('DOMContentLoaded', initSettings)
+    : initSettings();
 
-  new MutationObserver(() => recolor()).observe(document.body, {
+  const RECOLOR_DOM_SELECTOR = [
+    OLD_VIBE_SELECTOR,
+    NEW_WAVE_SELECTOR,
+    '[data-test-id="MAIN_PAGE"]',
+    '[data-test-id="FULLSCREEN_PLAYER_MODAL"]',
+    'div[data-test-id="PLAYERBAR_DESKTOP_COVER_CONTAINER"]',
+    'img[data-test-id="ENTITY_COVER_IMAGE"]',
+    'img[class*="AlbumCover_cover"]',
+    '[class*="PlayerBarDesktopWithBackgroundProgressBar_cover"]'
+  ].join(',');
+
+  function nodeTouchesRecolorTarget(node) {
+    if (!node || node.nodeType !== 1) return false;
+    try {
+      return node.matches?.(RECOLOR_DOM_SELECTOR) || !!node.querySelector?.(RECOLOR_DOM_SELECTOR);
+    } catch {
+      return false;
+    }
+  }
+
+  function mutationTouchesRecolorTarget(mutations) {
+    return mutations.some(mutation => {
+      if (mutation.type === 'attributes') {
+        return nodeTouchesRecolorTarget(mutation.target);
+      }
+
+      for (const node of mutation.addedNodes) {
+        if (nodeTouchesRecolorTarget(node)) return true;
+      }
+      for (const node of mutation.removedNodes) {
+        if (nodeTouchesRecolorTarget(node)) return true;
+      }
+      return false;
+    });
+  }
+
+  new MutationObserver((mutations) => {
+    if (!mutationTouchesRecolorTarget(mutations)) return;
+    syncWaveLayoutState();
+    scheduleRecolor(false);
+  }).observe(document.body, {
+    attributes: true,
+    attributeFilter: ['src', 'srcset'],
     childList: true,
     subtree: true
   }
   );
 
-  setInterval(async () => {
-    const newSettings = await getSettings();
-    const newJSON = JSON.stringify(newSettings);
-    if (newJSON !== lastSETTINGS_JSON) {
-      SETTINGS = newSettings;
-      lastSETTINGS_JSON = newJSON;
-      console.log('[Colorize 2] Настройки изменились → перекрашиваем');
-      await recolor(true);
-    }
-  }, 500);
-
   function checkVibeReturn() {
     let lastCover = '';
-    return setInterval(async () => {
-      const vibe = document.querySelector('[class*="MainPage_vibe"]');
+    return setInterval(() => {
+      if (!SETTINGS.enableBackgroundImage) return;
+
+      syncWaveLayoutState();
+      const vibe = getVibeBackgroundTarget();
       if (!vibe) return;
 
       const src = coverURL();
-      const hasBackground = vibe.style.backgroundImage?.includes('url(');
+      if (!src) return;
+
+      const hasBackground = vibe.style.backgroundImage?.includes('url(') || !!vibe.querySelector('.bg-layer');
 
       if (!hasBackground || src !== lastCover) {
         console.log('[Colorize 2] Vibe пустой или обложка изменилась → обновляем');
         lastCover = src;
-        await recolor(true);
+        scheduleRecolor(true);
       }
-    }, 1500);
+    }, 2500);
   }
 
   const monitorPageChangeAndSetBackground = () => {
-    const checkPage = () => {
+    const handlePageChange = () => {
       const currentURL = location.href;
       if (currentURL !== lastPageURL) {
         lastPageURL = currentURL;
         console.log('[Colorize 2] Переход на новую страницу:', currentURL);
-        tryInjectBackground();
+        syncWaveLayoutState();
+        scheduleRecolor(true);
       }
     };
-    setInterval(checkPage, 300);
+
+    ['pushState', 'replaceState'].forEach(method => {
+      const original = history[method];
+      if (typeof original !== 'function' || original.__colorizeWrapped) return;
+
+      const wrapped = function (...args) {
+        const result = original.apply(this, args);
+        setTimeout(handlePageChange, 0);
+        return result;
+      };
+      wrapped.__colorizeWrapped = true;
+      history[method] = wrapped;
+    });
+
+    window.addEventListener('popstate', () => setTimeout(handlePageChange, 0));
+    window.addEventListener('hashchange', () => setTimeout(handlePageChange, 0));
   };
-
-  async function tryInjectBackground() {
-    const image = await getHiResCover();
-    if (!image) {
-      console.warn('[Colorize 2] Нет обложки для фона');
-      return;
-    }
-
-    console.log('[Colorize 2] Принудительный запуск backgroundReplace:', image);
-    lastBackgroundURL = '';
-    backgroundReplace(image);
-  }
 
   monitorPageChangeAndSetBackground();
 

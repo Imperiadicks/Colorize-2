@@ -3,6 +3,74 @@
   overflow: hidden;
 }
 
+html.colorize-new-wave-page {
+  --colorize-wave-radius: 12px;
+}
+
+html.colorize-new-wave-page [class*="Content_main"] {
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: var(--colorize-wave-radius) !important;
+}
+
+html.colorize-new-wave-page [class*="Content_rootOld_newVibe"],
+html.colorize-new-wave-page [class*="Content_rootOld"][class*="newVibe"] {
+  margin-block-end: calc(var(--ym-spacer-size-m, 8px) * -7) !important;
+  margin-block-start: calc(var(--ym-spacer-size-m, 8px) * 0) !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  border-radius: var(--colorize-wave-radius) !important;
+}
+
+html.colorize-new-wave-page [data-test-id="MAIN_PAGE"],
+html.colorize-new-wave-page [class*="DefaultLayout_rootNewWave"] {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  border-radius: var(--colorize-wave-radius) !important;
+}
+
+html.colorize-new-wave-page [class*="VibePage_root"] {
+  position: relative !important;
+  isolation: isolate !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  height: calc(100% - 0.25vh) !important;
+  min-height: calc(100vh - 0.25vh) !important;
+  min-height: calc(100dvh - 0.25vh) !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  border-radius: var(--colorize-wave-radius) !important;
+  transform: translateY(0.25vh) !important;
+}
+
+html.colorize-new-wave-page .bg-layer,
+html.colorize-new-wave-page .bg-cover,
+html.colorize-new-wave-page .bg-gradient {
+  border-radius: inherit !important;
+  overflow: hidden !important;
+}
+
+html.colorize-new-wave-page .bg-layer {
+  z-index: 0 !important;
+}
+
+html.colorize-new-wave-page [class*="VibePage_root"] > :not(.bg-layer),
+html.colorize-new-wave-page [class*="DefaultLayout_rootNewWave"] > :not(.bg-layer) {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
 @keyframes backgroundMovement {
   0% {
     background-position: 20% 20%;
@@ -28,7 +96,7 @@
 [class*="bg-cover"] {
   animation: backgroundMovement 15s infinite
     cubic-bezier(0.455, 0.03, 0.515, 0.955) !important;
-  margin-bottom:10px;
+  margin: 0 !important;
 }
 .avatar-zoom {
   cursor: zoom-in;
@@ -99,11 +167,14 @@
 .Meta_title__GGBnH, .SonataFullscreenControlsDesktop_playPauseButtonIcon__IkUNX, 
 .ChangeTimecode_slider__P4qmT, .FullscreenPlayerDesktopContent_sliderContainer__FtBZ7, 
 .PlayButton_icon__t_THQ, .PlayButton_root__nYKdN, .PlayButtonWithCover_root__s6Orw,
-.PlayButtonWithCover_playButton__rV9pQ{
+.PlayButtonWithCover_playButton__rV9pQ, .AlbumCover_playButtonIcon__2b7_R,
+.UwnL5AJBMMAp6NwMDdZk,
+[data-test-id="LIKE_BUTTON"] {
   color: var(--ym-controls-color-secondary-text-enabled);
 }
-[data-test-id="LIKE_BUTTON"] {
-    color: var(--ym-controls-color-secondary-text-enabled) !important;
+
+.AlbumCover_playButton__N2FOS{
+  background-color: hsla(0, 0%, 100%, 0.08);
 }
 .SonataFullscreenControlsDesktop_sonataButton__69FFc[data-test-id="PLAY_BUTTON"], .SonataFullscreenControlsDesktop_sonataButton__69FFc[data-test-id="PAUSE_BUTTON"] {
     border-color: var(--ym-controls-color-secondary-text-enabled) !important;
@@ -126,3 +197,22 @@ background-color: var(--ym-controls-color-secondary-text-enabled);
 .cover-download-button svg{
   fill: var(--ym-controls-color-secondary-text-enabled);
 }
+
+:is(button, [role="button"]):is(:disabled, [disabled], [aria-disabled="true"]) {
+  color: var(--ym-controls-color-secondary-text-disabled) !important;
+}
+
+:is(button, [role="button"]):is(:disabled, [disabled], [aria-disabled="true"]) :is(svg, use, path) {
+  color: var(--ym-controls-color-secondary-text-disabled) !important;
+  fill: currentColor !important;
+}
+
+:is(button, [role="button"]):not(:disabled):not([disabled]):not([aria-disabled="true"]) :is(svg, use, path) {
+  color: var(--ym-controls-color-secondary-text-enabled) !important;
+  fill: currentColor !important;
+}
+
+.customButton.bordered{
+  border-color: var(--ym-controls-color-secondary-text-enabled) !important;
+}
+/* ## var(--ym-controls-color-secondary-text-enabled) */
