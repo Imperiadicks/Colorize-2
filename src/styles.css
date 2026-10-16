@@ -1,3 +1,7 @@
+:root {
+    --colorize-theme-active: 1;
+}
+
 /* ─────────────────── Общие доработки интерфейса ─────────────────── */
 body.sc-has-grad::before {
     content: '';
