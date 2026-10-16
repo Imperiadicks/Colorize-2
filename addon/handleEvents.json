@@ -33,6 +33,14 @@
                     "defaultParameter": true
                 },
                 {
+                    "id": "autoVibeButtonContrast",
+                    "name": "Автозатемнение кнопок Vibe",
+                    "description": "Добавляет тёмый фон кнопкам Vibe, когда фоновая обложка или цвет интерфейса слишком яркие.",
+                    "type": "button",
+                    "bool": true,
+                    "defaultParameter": true
+                },
+                {
                     "id": "staticBackground",
                     "name": "Статичный фон (без движения)",
                     "description": "Отключает анимацию движения фоновой обложки. Картинка остаётся статичной.",
@@ -55,6 +63,14 @@
                     "type": "button",
                     "bool": false,
                     "defaultParameter": true
+                },
+                {
+                    "id": "removeBorder",
+                    "name": "Убрать border",
+                    "description": "Полностью убирает рамку и внутреннюю тень у navbar, основного контента и панели плеера.",
+                    "type": "button",
+                    "bool": false,
+                    "defaultParameter": false
                 }
             ]
         }

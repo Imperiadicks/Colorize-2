@@ -1,0 +1,29 @@
+{
+  "name": "pulsesync-colorize-2",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Colorize 2 theme for PulseSync built with Vite",
+  "scripts": {
+    "dev": "node ./scripts/manage.mjs dev",
+    "build": "node ./scripts/manage.mjs build",
+    "build:theme": "vite build --config vite.config.ts",
+    "format": "prettier --write .",
+    "sync": "node ./scripts/manage.mjs sync",
+    "build:sync": "node ./scripts/manage.mjs build-sync",
+    "test:ui": "pnpm --dir ../Colorize2Core test:ui",
+    "test:performance": "pnpm --dir ../Colorize2Core test:performance",
+    "test:contrast": "pnpm --dir ../Colorize2Core test:contrast"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@pulsesync/yamusic-types": "^0.0.1",
+    "@types/node": "^25.5.2",
+    "esbuild": "^0.28.0",
+    "prettier": "^3.8.1",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.8"
+  }
+}

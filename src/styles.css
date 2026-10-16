@@ -1,0 +1,441 @@
+/* ─────────────────── Общие доработки интерфейса ─────────────────── */
+body.sc-has-grad::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: var(--grad-main);
+    pointer-events: none;
+}
+
+.SonataFullscreenControlsDesktop_sonataPlayButton__QXEEp:not(:disabled):focus-visible, .SonataFullscreenControlsDesktop_sonataPlayButton__QXEEp:not(:disabled):hover
+{
+    background-color: var(--ym-controls-color-secondary-card-hovered)
+}
+
+[class*='MainPage_vibe'] {
+    transition: height 1.5s ease;
+    overflow: hidden;
+}
+
+html.colorize-new-wave-page {
+    --colorize-wave-radius: 12px;
+}
+
+.VibeResetButton_context__hsTlv
+{
+    color: var(--accent-color, var(--ym-controls-color-secondary-text-enabled_variant));
+}
+
+html.colorize-new-wave-page [class*='Content_main'] {
+    padding: 0 !important;
+    overflow: hidden !important;
+    border-radius: var(--colorize-wave-radius) !important;
+}
+
+html.colorize-new-wave-page [class*='CommonLayout_root'] {
+    min-height: 0 !important;
+    overflow: hidden !important;
+}
+
+html.colorize-new-wave-page [class*='CommonLayout_root'] > aside,
+html.colorize-new-wave-page [class*='CommonLayout_root'] > [class*='Content_root'][class*='newVibe'] {
+    align-self: stretch !important;
+    box-sizing: border-box !important;
+    height: calc(100vh - 1vh) !important;
+    height: calc(100dvh - 4vh) !important;
+    min-height: 0 !important;
+    max-height: calc(100vh - 1vh) !important;
+    max-height: calc(100dvh - 4vh) !important;
+    margin-block-start: 0 !important;
+    margin-block-end: 1vh !important;
+    border-radius: 13px;
+}
+
+html.colorize-new-wave-page [class*='CommonLayout_root'] > aside {
+    height: calc(100vh - 1vh - 10px) !important;
+    height: calc(100dvh - 4vh - 10px) !important;
+    max-height: calc(100vh - 1vh - 10px) !important;
+    max-height: calc(100dvh - 4vh - 10px) !important;
+}
+
+@media (max-height: 750px) {
+    html.colorize-new-wave-page [class*='CommonLayout_root'] > aside,
+    html.colorize-new-wave-page [class*='CommonLayout_root'] > [class*='Content_root'][class*='newVibe'] {
+        height: calc(100dvh - 5.5vh) !important;
+    }
+
+    html.colorize-new-wave-page [class*='CommonLayout_root'] > aside {
+        height: calc(100dvh - 5.5vh - 10px) !important;
+        max-height: calc(100dvh - 5.5vh - 10px) !important;
+    }
+}
+
+html.colorize-new-wave-page [class*='Content_root'][class*='newVibe'] {
+    overflow: hidden !important;
+    border-radius: var(--colorize-wave-radius) !important;
+}
+
+html.colorize-new-wave-page [data-test-id='MAIN_PAGE'],
+html.colorize-new-wave-page [class*='DefaultLayout_rootNewWave'] {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    border-radius: var(--colorize-wave-radius) !important;
+}
+
+html.colorize-new-wave-page [class*='VibePage_root'] {
+    position: relative !important;
+    isolation: isolate !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    border-radius: var(--colorize-wave-radius) !important;
+    transform: none !important;
+}
+
+html.colorize-new-wave-page .bg-layer,
+html.colorize-new-wave-page .bg-cover,
+html.colorize-new-wave-page .bg-gradient {
+    border-radius: inherit !important;
+    overflow: hidden !important;
+}
+
+.bg-layer,
+.bg-cover,
+.bg-gradient {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+.bg-layer {
+    z-index: 0;
+    overflow: hidden;
+    opacity: 1;
+    transition: opacity 0.6s ease;
+}
+
+.bg-layer-removing {
+    opacity: 0;
+}
+
+.bg-cover {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.bg-cover-visible {
+    opacity: 1;
+}
+
+.bg-gradient {
+    z-index: 1;
+    background: radial-gradient(
+        circle at 70% 70%,
+        var(--ym-background-color-secondary-enabled-blur, rgba(0, 0, 0, 0)) 0%,
+        var(--ym-background-color-primary-enabled-content, rgba(0, 0, 0, 0.2)) 70%,
+        var(--ym-background-color-primary-enabled-basic, rgba(0, 0, 0, 0.3)) 100%
+    );
+    opacity: 0.6;
+}
+
+html.colorize-new-wave-page .bg-layer {
+    z-index: 0 !important;
+}
+
+html.colorize-new-wave-page [class*='VibePage_root'] > :not(.bg-layer),
+html.colorize-new-wave-page [class*='DefaultLayout_rootNewWave'] > :not(.bg-layer) {
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+@keyframes backgroundMovement {
+    0% {
+        background-position: 20% 20%;
+        background-size: 110%;
+    }
+    25% {
+        background-position: 80% 20%;
+        background-size: 115%;
+    }
+    50% {
+        background-position: 80% 80%;
+        background-size: 120%;
+    }
+    75% {
+        background-position: 20% 80%;
+        background-size: 115%;
+    }
+    100% {
+        background-position: 20% 20%;
+        background-size: 110%;
+    }
+}
+
+[class*='bg-cover'] {
+    animation: backgroundMovement 15s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955) !important;
+    margin: 0 !important;
+}
+
+.avatar-zoom {
+    cursor: zoom-in;
+    overflow: hidden;
+    transform-origin: center;
+}
+
+.kc5CjvU5hT9KEj0iTt3C:hover,
+.kc5CjvU5hT9KEj0iTt3C:focus {
+    backdrop-filter: none;
+}
+
+.PlayButton_root__nYKdN:not(:disabled) {
+    transition: all 0.2s ease-in-out;
+}
+
+.PageHeaderPlaylist_root__yJBii,
+.CommonAlbumPage_averageColorBackground__hs1_3,
+.PlaylistPage_averageColorBackground__3wEkw,
+.ArtistPage_averageColorBackground__wXTSY {
+    background: linear-gradient(
+        var(--ym-controls-color-secondary-default-enabled, var(--ym-background-color-secondary-enabled-blur)) 0,
+        transparent 100%
+    );
+}
+
+.PlayerBarDesktopWithBackgroundProgressBar_player__ASKKs,
+.Content_rootOld__g85_m,
+.Content_main__8_wIa,
+.PlayerBarDesktopWithBackgroundProgressBar_root__bpmwN.PlayerBarDesktopWithBackgroundProgressBar_important__HzXrK,
+.LikesAndHistory_historyIconContainer__KPPbS,
+.LikesAndHistoryItem_root__oI1gk {
+    background: none;
+    background-color: transparent !important;
+}
+
+.DefaultLayout_navbar_application_linux__ejlGn,
+.DefaultLayout_navbar_application_windows__3hDQ_,
+.Content_main__8_wIa,
+.PlayerBarDesktopWithBackgroundProgressBar_root__bpmwN.PlayerBarDesktopWithBackgroundProgressBar_important__HzXrK {
+    border: 1px solid var(--color-light-1) !important;
+    box-shadow: 0 0 0 1px var(--color-light-1) inset;
+    margin-block-start: 0;
+    border-radius: var(--ym-layout-border-radius);
+    margin-block-end: 10px;
+}
+
+html.colorize-borderless [class*='DefaultLayout_navbar_application_linux__'],
+html.colorize-borderless [class*='DefaultLayout_navbar_application_windows__'],
+html.colorize-borderless [class*='Content_main__'],
+html.colorize-borderless [class*='PlayerBarDesktopWithBackgroundProgressBar_root__'][class*='PlayerBarDesktopWithBackgroundProgressBar_important__'] {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.CommonLayout_root__WC_W1 {
+    background: radial-gradient(
+        circle at 70% 70%,
+        var(--ym-background-color-secondary-enabled-blur) 0%,
+        var(--ym-background-color-primary-enabled-content) 70%,
+        var(--ym-background-color-primary-enabled-basic) 100%
+    ) !important;
+
+    box-shadow: inset 0 0 40px 10px rgba(0, 0, 0, 0.4) !important;
+    border-radius: 12px;
+}
+
+.PlayerBarDesktopWithBackgroundProgressBar_player__ASKKs {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.WithTopBanner_root__P__x3 {
+    background: radial-gradient(
+        circle at 65% 65%,
+        var(--ym-background-color-secondary-enabled-blur) 0%,
+        var(--ym-background-color-primary-enabled-content) 60%,
+        var(--ym-background-color-primary-enabled-basic) 100%
+    ) !important;
+    box-shadow: inset 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+}
+
+.By12CU9obvaH0jYtauNw {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.By12CU9obvaH0jYtauNw::-webkit-scrollbar {
+    display: none;
+}
+
+.VibeBlock_controls__BpDFL {
+    z-index: 2;
+}
+
+.SonataFullscreenControlsDesktop_sonataPlayButton__QXEEp {
+    background-color: var(--ym-controls-color-secondary-card-enabled);
+}
+
+.VibePlayerControls_withYellowPlayButton__vnoer,
+.VibePlayerControls_skipButton__z57B_ {
+    background-color: hsl(0, 0%, 100%, 0.08) !important;
+    margin-inline: 0.15rem;
+}
+
+html.colorize-bright-vibe-controls [class*='VibePlayerBar_button__'],
+html.colorize-bright-vibe-controls [class*='VibePlayerControls_playButton__'],
+html.colorize-bright-vibe-controls [class*='VibePlayerControls_withYellowPlayButton__'],
+html.colorize-bright-vibe-controls [class*='VibePlayerControls_skipButton__'],
+html.colorize-bright-vibe-controls [class*='VibePlayerControls_playButton_playing__'],
+html.colorize-bright-vibe-controls :is(button, [role='button']).colorize-vibe-control-contrast {
+    background: color-mix(in srgb, var(--color-dark-10) 78%, transparent) !important;
+}
+
+.rWukOKAJh5Ga7JuIp62L {
+    background: var(--ym-controls-color-secondary-default-enabled);
+}
+
+.rWukOKAJh5Ga7JuIp62L:hover,
+.LikesAndHistory_historyIconContainer__KPPbS:hover,
+.LikesAndHistoryItem_root__oI1gk:hover {
+    background: var(--ym-controls-color-secondary-default-hovered) !important;
+}
+
+.JjlbHZ4FaP9EAcR_1DxF:active {
+    color: var(--ym-controls-color-secondary-on_default-enabled) !important;
+}
+
+.JjlbHZ4FaP9EAcR_1DxF:hover {
+    color: var(--ym-controls-color-primary-default-hovered) !important;
+}
+
+.PlaylistFilters_filter_selected__y3GuB {
+    border-color: var(--ym-controls-color-secondary-on_default-enabled) !important;
+}
+
+.bg-static-mode [class*='bg-cover'] {
+    animation: none !important;
+    background-position: center !important;
+    background-size: cover !important;
+}
+
+.TrackModal_root__QrFg6,
+.PulseSync_castPopover,
+.s7_MO4NdsYs7nPQALD8W {
+    background-color: color-mix(in srgb, var(--ym-background-color-secondary-enabled-blur) 65%, transparent);
+    backdrop-filter: blur(28px);
+}
+
+.SHvrm0VRiLVwGqJJjNO8:before {
+    background: var(--ym-controls-color-secondary-text-enabled) !important;
+}
+
+.customButton.bordered {
+    border-color: var(--ym-controls-color-secondary-text-enabled) !important;
+}
+
+[class*='VibeAnimation_enter_active__'],
+[class*='VibeAnimation_enter_done__'],
+[class*='VibeAnimation_exit__'] {
+    opacity: 0 !important;
+}
+.MsLY_qiKofQrwKAr98EC:after
+{
+    background: linear-gradient(1turn,  var(--ym-background-color-secondary-enabled-blur, var(--ym-background-color-primary-enabled-content)) 0, hsla(0, 0%, 5%, 0) 100%)
+}
+
+[class*='StickyHeader_container__'][class*='SearchPage_skeletonStickyHeader__'][class*='SearchPage_important__'] {
+    z-index: 1;
+    inset-block-start: 4rem;
+    background: linear-gradient(180deg, var(--ym-background-color-primary-enabled-content), transparent 50%);
+    backdrop-filter: blur(0.5rem) brightness(100%) saturate(140%);
+}
+
+.Navbar_root__chF4R
+{
+    margin-block-end: 2vh !important;
+}
+/* ===============================  SVG+TEXT  ========================= */
+.SonataFullscreenControlsDesktop_sonataButton__69FFc,
+.iJVAJMgccD4vj4E4o068,
+.WsKeF73pWotx9W1tWdYY,
+.QYIUcw5hsJgmlwLrB5fw,
+.SonataFullscreenControlsDesktop_playPauseButtonIcon__IkUNX,
+.vqAVPWFJlhAOleK_SLk4,
+.wy8tgXoSb23KtiD3EFWg,
+.Meta_title__GGBnH,
+.NewRelease_artistCaption__1F8A9,
+.NewReleaseCard_title__N5soS {
+    color: var(--ym-controls-color-secondary-on_default-enabled) !important;
+}
+
+.cover-download-button,
+.cover-download-button:focus {
+    background-color: var(--ym-controls-color-secondary-card-enabled);
+    color: var(--ym-controls-color-secondary-text-enabled) !important;
+}
+
+:is(button, [role='button']):is(:disabled, [disabled], [aria-disabled='true']) {
+    color: var(--ym-controls-color-secondary-text-disabled) !important;
+}
+
+/* ===================================  SVG  ========================== */
+.ChangeVolume_icon__5Zv2a:hover {
+    color: var(--ym-controls-color-primary-default-hovered) !important;
+}
+
+.cover-download-button svg {
+    fill: var(--ym-controls-color-secondary-text-enabled);
+}
+
+:is(button, [role='button']):is(:disabled, [disabled], [aria-disabled='true']) :is(svg, use, path) {
+    color: var(--ym-controls-color-secondary-default-enabled) !important;
+    fill: currentColor !important;
+}
+
+.BaseSonataControlsDesktop_playButtonIcon__TlFqv, .VibePlayerControls_withYellowPlayButton__vnoer .VibePlayerControls_playButtonIcon__OXCWN{
+    color: var(--ym-controls-color-secondary-text-enabled) !important;
+}
+.FullscreenPlayerDesktop_closeButton__MQ64s
+{
+    background-color: var(--color-dark-3-6) !important
+}
+.nHWc2sto1C6Gm0Dpw_l0
+{
+    background-color: var(--color-dark-3-6) !important
+}
+/* ===============================  TEXT  ============================== */
+.QYIUcw5hsJgmlwLrB5fw {
+    --ym-logo-text-color: var(--ym-logo-color-primary-variant) !important;
+}
+
+.PulseSync_castPopoverItemTitle {
+    color: var(--ym-controls-color-secondary-on_default-enabled) !important;
+}
+
+/* ─────────────────── Волна ─────────────────── */
+
+.VibeWidget_root__Chpsm {
+    background: linear-gradient(180deg, var(--ym-background-color-primary-enabled-content) 0, var(--ym-controls-color-secondary-text-disabled) 80%);
+}
+
+[class*='bg-cover'] {
+    will-change: auto;
+}
+.VibeWidgetAnimation_root__7fpeP {
+    opacity: 0;
+}

@@ -1,0 +1,307 @@
+.ym-dark-theme.ym-dark-theme {
+    --ym-controls-color-primary-default-disabled: var(--color-dark-6) !important;
+    --ym-controls-color-primary-default-enabled: var(--color-light-9) !important;
+    --ym-controls-color-primary-default-hovered: var(--color-light-8) !important;
+    --ym-controls-color-primary-default-pressed: var(--color-light-10) !important;
+    --ym-controls-color-primary-default-focused_stroke: var(--color-light-6-4) !important;
+    --ym-controls-color-primary-on_default-disabled: var(--color-dark-3-8) !important;
+    --ym-controls-color-primary-on_default-enabled: var(--color-dark-10) !important;
+    --ym-controls-color-primary-outline-disabled: var(--color-dark-7) !important;
+    --ym-controls-color-primary-outline-enabled: var(--color-dark-6-10) !important;
+    --ym-controls-color-primary-outline-hovered: var(--color-dark-5) !important;
+    --ym-controls-color-primary-outline-hovered_stroke: var(--color-light-7) !important;
+    --ym-controls-color-primary-outline-selected_stroke: var(--color-light-8) !important;
+    --ym-controls-color-primary-outline-pressed: var(--color-dark-4) !important;
+    --ym-controls-color-primary-outline-focused_stroke: var(--color-light-6-4) !important;
+    --ym-controls-color-primary-on_outline-disabled: var(--color-light-4-6) !important;
+    --ym-controls-color-primary-on_outline-enabled: var(--color-light-10) !important;
+    --ym-controls-color-primary-text-disabled: var(--color-light-4-5) !important;
+    --ym-controls-color-primary-text-enabled: var(--color-light-10-6) !important;
+    --ym-controls-color-primary-text-enabled_variant: var(--color-light-9) !important;
+    --ym-controls-color-primary-text-hovered: var(--color-light-8) !important;
+    --ym-controls-color-primary-text-hovered_variant: var(--color-light-9) !important;
+    --ym-controls-color-primary-text-vibe: linear-gradient(180deg, var(--color-light-10-9) 8.63%, var(--color-light-7-7) 77.58%) !important;
+    --ym-controls-color-primary-text-vibe_icon: var(--color-light-8-7) !important;
+    --ym-controls-color-secondary-default-disabled: var(--color-light-10-1) !important;
+    --ym-controls-color-secondary-default-enabled: var(--color-light-10-1) !important;
+    --ym-controls-color-secondary-default-hovered: var(--color-light-10-2) !important;
+    --ym-controls-color-secondary-default-pressed: var(--color-light-10-3) !important;
+    --ym-controls-color-secondary-default-focused: var(--color-dark-10-5) !important;
+    --ym-controls-color-secondary-default-focused_stroke: var(--color-light-10-4) !important;
+    --ym-controls-color-secondary-on_default-disabled: var(--color-light-6-3) !important;
+    --ym-controls-color-secondary-on_default-enabled: var(--color-light-9) !important;
+    --ym-controls-color-secondary-on_default-enabled_variant: var(--color-light-10-5) !important;
+    --ym-controls-color-secondary-on_default-hovered: var(--color-light-8) !important;
+    --ym-controls-color-secondary-outline-disabled_stroke: var(--color-dark-7) !important;
+    --ym-controls-color-secondary-outline-enabled_stroke: var(--color-light-8-3) !important;
+    --ym-controls-color-secondary-outline-hovered_stroke: var(--color-light-6-5) !important;
+    --ym-controls-color-secondary-outline-selected: var(--color-dark-7) !important;
+    --ym-controls-color-secondary-outline-selected_stroke: var(--color-light-9) !important;
+    --ym-controls-color-secondary-outline-pressed: var(--color-dark-5) !important;
+    --ym-controls-color-secondary-outline-focused_stroke: var(--color-dark-5) !important;
+    --ym-controls-color-secondary-on_outline-disabled: var(--color-light-4-5) !important;
+    --ym-controls-color-secondary-on_outline-enabled: var(--color-light-9) !important;
+    --ym-controls-color-secondary-on_outline-enabled_variant: var(--color-light-5-6) !important;
+    --ym-controls-color-secondary-text-disabled: var(--color-light-10-1) !important;
+    --ym-controls-color-secondary-text-enabled: var(--color-light-8-5) !important;
+    --ym-controls-color-secondary-text-enabled_variant: var(--color-light-10) !important;
+    --ym-controls-color-secondary-text-hovered: var(--color-light-9) !important;
+    --ym-controls-color-secondary-text-selected: var(--color-light-9) !important;
+    --ym-controls-color-secondary-card-disabled: var(--color-light-10-3) !important;
+    --ym-controls-color-secondary-card-enabled: var(--color-dark-8-9) !important;
+    --ym-controls-color-secondary-card-hovered: var(--color-dark-6-9) !important;
+    --ym-controls-color-plus-default-disabled: var(--color-light-10-1) !important;
+    --ym-controls-color-plus-default-enabled: linear-gradient(90deg, var(--color-light-6), var(--color-light-8) 30%, var(--color-light-7) 75%, var(--color-light-5)) !important;
+    --ym-controls-color-plus-default-hovered: linear-gradient(90deg, var(--color-light-6-9), var(--color-light-8-9) 30%, var(--color-light-7-9) 75%, var(--color-light-5-9)) !important;
+    --ym-controls-color-plus-default-pressed: var(--color-light-10-3) !important;
+    --ym-controls-color-plus-default-focused_stroke: var(--color-light-10-5) !important;
+    --ym-controls-color-plus-on_default-disabled: var(--color-light-4-6) !important;
+    --ym-controls-color-plus-on_default-enabled: var(--color-light-8-9) !important;
+    --ym-controls-color-accent-default-enabled: var(--color-light-7) !important;
+    --ym-controls-color-accent-default-hovered: var(--color-light-6) !important;
+    --ym-controls-color-accent-default-pressed: var(--color-light-10-8) !important;
+    --ym-controls-color-accent-default-focused_stroke: var(--color-light-6-3) !important;
+    --ym-controls-color-accent-on_default-enabled: var(--color-dark-10) !important;
+}
+
+.ym-light-theme.ym-light-theme {
+    --ym-controls-color-primary-default-disabled: var(--color-light-4) !important;
+    --ym-controls-color-primary-default-enabled: var(--color-dark-8) !important;
+    --ym-controls-color-primary-default-hovered: var(--color-dark-7) !important;
+    --ym-controls-color-primary-default-pressed: var(--color-dark-9) !important;
+    --ym-controls-color-primary-default-focused_stroke: var(--color-dark-6-3) !important;
+    --ym-controls-color-primary-on_default-disabled: var(--color-dark-4-6) !important;
+    --ym-controls-color-primary-on_default-enabled: var(--color-light-10) !important;
+    --ym-controls-color-primary-outline-disabled: var(--color-light-4) !important;
+    --ym-controls-color-primary-outline-enabled: var(--color-light-7) !important;
+    --ym-controls-color-primary-outline-hovered: var(--color-light-5) !important;
+    --ym-controls-color-primary-outline-hovered_stroke: var(--color-dark-7) !important;
+    --ym-controls-color-primary-outline-selected_stroke: var(--color-dark-8) !important;
+    --ym-controls-color-primary-outline-pressed: var(--color-light-10) !important;
+    --ym-controls-color-primary-outline-focused_stroke: var(--color-dark-6-3) !important;
+    --ym-controls-color-primary-on_outline-disabled: var(--color-dark-4-5) !important;
+    --ym-controls-color-primary-on_outline-enabled: var(--color-dark-9) !important;
+    --ym-controls-color-primary-text-disabled: var(--color-dark-4-5) !important;
+    --ym-controls-color-primary-text-enabled: var(--color-dark-7-8) !important;
+    --ym-controls-color-primary-text-enabled_variant: var(--color-dark-9) !important;
+    --ym-controls-color-primary-text-hovered: var(--color-dark-8) !important;
+    --ym-controls-color-primary-text-hovered_variant: var(--color-light-8) !important;
+    --ym-controls-color-primary-text-vibe: linear-gradient(167.52deg, var(--color-dark-10-9) 27.43%, var(--color-dark-8-9) 50.08%, var(--color-dark-6-9) 95.09%) !important;
+    --ym-controls-color-primary-text-vibe_icon: var(--color-dark-10-9) !important;
+    --ym-controls-color-secondary-default-disabled: var(--color-dark-1-1) !important;
+    --ym-controls-color-secondary-default-enabled: var(--color-dark-2-1) !important;
+    --ym-controls-color-secondary-default-hovered: var(--color-dark-3-2) !important;
+    --ym-controls-color-secondary-default-pressed: var(--color-light-8-6) !important;
+    --ym-controls-color-secondary-default-focused: var(--color-dark-5-5) !important;
+    --ym-controls-color-secondary-default-focused_stroke: var(--color-dark-3-3) !important;
+    --ym-controls-color-secondary-on_default-disabled: var(--color-dark-4-4) !important;
+    --ym-controls-color-secondary-on_default-enabled: var(--color-dark-10-9) !important;
+    --ym-controls-color-secondary-on_default-enabled_variant: var(--color-light-8-7) !important;
+    --ym-controls-color-secondary-on_default-hovered: var(--color-light-8) !important;
+    --ym-controls-color-secondary-outline-disabled_stroke: var(--color-dark-2-2) !important;
+    --ym-controls-color-secondary-outline-enabled_stroke: var(--color-dark-4-4) !important;
+    --ym-controls-color-secondary-outline-hovered_stroke: var(--color-dark-6-5) !important;
+    --ym-controls-color-secondary-outline-selected: var(--color-light-6) !important;
+    --ym-controls-color-secondary-outline-selected_stroke: var(--color-dark-10) !important;
+    --ym-controls-color-secondary-outline-pressed: var(--color-dark-2-2) !important;
+    --ym-controls-color-secondary-outline-focused_stroke: var(--color-dark-2-2) !important;
+    --ym-controls-color-secondary-on_outline-disabled: var(--color-dark-4-4) !important;
+    --ym-controls-color-secondary-on_outline-enabled: var(--color-dark-9) !important;
+    --ym-controls-color-secondary-on_outline-enabled_variant: var(--color-dark-6-7) !important;
+    --ym-controls-color-secondary-text-disabled: var(--color-light-6-4) !important;
+    --ym-controls-color-secondary-text-enabled: var(--color-light-8-5) !important;
+    --ym-controls-color-secondary-text-enabled_variant: var(--color-light-6) !important;
+    --ym-controls-color-secondary-text-hovered: var(--color-light-7) !important;
+    --ym-controls-color-secondary-text-selected: var(--color-light-7) !important;
+    --ym-controls-color-secondary-card-disabled: var(--color-light-7-3) !important;
+    --ym-controls-color-secondary-card-enabled: var(--color-dark-9-9) !important;
+    --ym-controls-color-secondary-card-hovered: var(--color-dark-8-9) !important;
+    --ym-controls-color-plus-default-disabled: var(--color-light-6-3) !important;
+    --ym-controls-color-plus-default-enabled: linear-gradient(90deg, var(--color-dark-6), var(--color-dark-8) 30%, var(--color-dark-7) 75%, var(--color-dark-5)) !important;
+    --ym-controls-color-plus-default-hovered: linear-gradient(90deg, var(--color-dark-6-9), var(--color-dark-8-9) 30%, var(--color-dark-7-9) 75%, var(--color-dark-5-9)) !important;
+    --ym-controls-color-plus-default-pressed: var(--color-light-8) !important;
+    --ym-controls-color-plus-default-focused_stroke: var(--color-dark-6-4) !important;
+    --ym-controls-color-plus-on_default-disabled: var(--color-dark-4-6) !important;
+    --ym-controls-color-plus-on_default-enabled: var(--color-light-8-9) !important;
+    --ym-controls-color-accent-default-enabled: var(--color-dark-7) !important;
+    --ym-controls-color-accent-default-hovered: var(--color-dark-6) !important;
+    --ym-controls-color-accent-default-pressed: var(--color-light-8) !important;
+    --ym-controls-color-accent-default-focused_stroke: var(--color-dark-6-3) !important;
+    --ym-controls-color-accent-on_default-enabled: var(--color-light-10) !important;
+}
+
+:is(.ym-dark-theme, .ym-light-theme) :is(button, [role='button']) {
+    transition: color 220ms ease, background-color 220ms ease,
+        border-color 220ms ease, outline-color 220ms ease,
+        scale 220ms cubic-bezier(.22, 1, .36, 1);
+}
+
+:is(.ym-dark-theme, .ym-light-theme) :is(button, [role='button']) :is(svg, use, path) {
+    transition: color 220ms ease, fill 220ms ease, stroke 220ms ease;
+}
+
+:is(.ym-dark-theme, .ym-light-theme) :is(button, [role='button']):not(:disabled):not([disabled]):not([aria-disabled='true']) :is(svg, use, path) {
+    color: var(--ym-controls-color-secondary-text-enabled) !important;
+}
+
+:is(.ym-dark-theme, .ym-light-theme) :is(button, [role='button']):not(:disabled):not([disabled]):not([aria-disabled='true']) svg:not([fill='none']):not([stroke]) {
+    fill: currentColor !important;
+}
+
+:is(.ym-dark-theme, .ym-light-theme) :is(button, [role='button']):is(:hover, :focus-visible):not(:disabled):not([disabled]):not([aria-disabled='true']) :is(svg, use, path) {
+    color: var(--ym-controls-color-primary-text-hovered) !important;
+}
+
+:is(.ym-dark-theme, .ym-light-theme) :is(button, [role='button']):active:not(:disabled):not([disabled]):not([aria-disabled='true']) :is(svg, use, path) {
+    color: var(--ym-controls-color-primary-default-pressed) !important;
+}
+
+:is(.ym-dark-theme, .ym-light-theme) :is(button, [role='button']):focus-visible:not(:disabled):not([disabled]):not([aria-disabled='true']) {
+    outline: 2px solid var(--ym-controls-color-primary-default-focused_stroke) !important;
+    outline-offset: 3px;
+}
+
+:is(.ym-dark-theme, .ym-light-theme) :is(button, [role='button']):is(:disabled, [disabled], [aria-disabled='true']),
+:is(.ym-dark-theme, .ym-light-theme) :is(button, [role='button']):is(:disabled, [disabled], [aria-disabled='true']) :is(svg, use, path) {
+    color: var(--ym-controls-color-secondary-text-disabled) !important;
+}
+
+:is(button, [role='button']):is([class*='VibePlayerControls_withYellowPlayButton'], [class*='VibePlayerControls_playButton__'], [class*='VibePlayerControls_skipButton']) {
+    background-color: #ffffff14 !important;
+}
+
+:is([class*='SonataFullscreenControlsDesktop_sonataPlayButton'], .cover-download-button) {
+    background-color: var(--ym-controls-color-secondary-card-enabled);
+}
+
+:is([class*='SonataFullscreenControlsDesktop_sonataPlayButton'], .cover-download-button):is(:hover, :focus-visible):not(:disabled) {
+    background-color: var(--ym-controls-color-secondary-card-hovered);
+}
+
+.rWukOKAJh5Ga7JuIp62L {
+    background: var(--ym-controls-color-secondary-default-enabled);
+}
+
+:is(.rWukOKAJh5Ga7JuIp62L, [class*='LikesAndHistory_historyIconContainer'], [class*='LikesAndHistoryItem_root']):is(:hover, :focus-visible) {
+    background: var(--ym-controls-color-secondary-default-hovered) !important;
+}
+
+.JjlbHZ4FaP9EAcR_1DxF:is(:hover, :focus-visible),
+[class*='ChangeVolume_icon']:is(:hover, :focus-visible) {
+    color: var(--ym-controls-color-primary-default-hovered) !important;
+}
+
+.JjlbHZ4FaP9EAcR_1DxF:active {
+    color: var(--ym-controls-color-secondary-on_default-enabled) !important;
+}
+
+[class*='PlaylistFilters_filter_selected'],
+.customButton.bordered {
+    border-color: var(--ym-controls-color-secondary-text-enabled) !important;
+}
+
+:is([class*='VibePlayerControls_withYellowPlayButton'], [class*='VibePlayerControls_playButton__'],
+    [class*='VibePlayerControls_skipButton'], [class*='VibePlayerBar_button'],
+    [class*='AlbumCover_root'], [class*='AlbumCover_coverContainer']) {
+    transition: scale 220ms cubic-bezier(.22, 1, .36, 1), color 220ms ease, background-color 220ms ease;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+
+    :is([class*='VibePlayerControls_withYellowPlayButton'], [class*='VibePlayerControls_playButton__'],
+        [class*='VibePlayerControls_skipButton'], [class*='VibePlayerBar_button'],
+        [class*='AlbumCover_root'], [class*='AlbumCover_coverContainer']):hover:not(:disabled):not([disabled]):not([aria-disabled='true']) {
+        scale: 1.04;
+    }
+
+    [class*='AlbumCover_root']:hover [class*='AlbumCover_coverContainer'] {
+        scale: 1;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    :is(.ym-dark-theme, .ym-light-theme) :is(button, [role='button']):active:not(:disabled):not([disabled]):not([aria-disabled='true']) {
+        scale: .97;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    :is(.ym-dark-theme, .ym-light-theme) :is(button, [role='button'], svg, use, path),
+    :is([class*='AlbumCover_root'], [class*='AlbumCover_coverContainer']) {
+        transition: none !important;
+        scale: 1 !important;
+    }
+}
+
+[data-colorize-palette-fade] {
+    isolation: isolate;
+}
+
+.colorize-palette-background {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    contain: strict;
+}
+
+:is(.ym-dark-theme, .ym-light-theme) :is(button, [role='button']) {
+    transition-duration: 920ms, 920ms, 920ms, 220ms, 220ms;
+}
+
+:is(.ym-dark-theme, .ym-light-theme) :is(button, [role='button']):is(:hover, :focus-visible, :active),
+:is(.ym-dark-theme, .ym-light-theme) :is(button, [role='button']) :is(svg, use, path) {
+    transition-duration: 220ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .colorize-palette-background {
+        display: none !important;
+    }
+}
+
+.WheelItem_title_accentColor__QcDTs {
+    color: var(--ym-controls-color-secondary-text-enabled_variant) !important;
+}
+
+:is([data-test-id='WHEEL_SETTING_ITEM'], [data-test-id='WHEEL_RESHUFFLE_ITEM']) img[class*='WheelItem_cover'] {
+    filter: var(--colorize-wheel-icon-filter, none) !important;
+    transition: filter 920ms cubic-bezier(.22, 1, .36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :is([data-test-id='WHEEL_SETTING_ITEM'], [data-test-id='WHEEL_RESHUFFLE_ITEM']) img[class*='WheelItem_cover'] {
+        transition: none !important;
+    }
+}
+
+[data-test-id='PLAYERBAR_DESKTOP'] {
+    --player-average-color-background: var(--color-dark-5) !important;
+    --average-color-background: var(--color-dark-5) !important;
+}
+
+[class*='CommonLayout_root']>aside[data-test-id='NAVBAR'] {
+    grid-row: 1 !important;
+    align-self: stretch !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin-block-start: 0 !important;
+    margin-block-end: 10px !important;
+    box-sizing: border-box;
+}
+
+html.colorize-new-wave-page [class*='CommonLayout_root']>aside[data-test-id='NAVBAR'] {
+    grid-row: auto !important;
+
+    margin-block-end: 1vh !important;
+}
+
+@media (max-height: 750px) {
+    html.colorize-new-wave-page [class*='CommonLayout_root']>aside[data-test-id='NAVBAR'] {
+        height: calc(100dvh - 5.5vh) !important;
+        max-height: calc(100dvh - 5.5vh) !important;
+    }
+}
